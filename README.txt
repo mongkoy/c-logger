@@ -1,27 +1,28 @@
-liblogger : A logging framework for C / C++
+c-logger : A logging framework for C / C++ based on http://liblogger.sourceforge.net/
 ---------------------------------------------------------
-Copyright : Vineeth Neelakant - nvineeth _at_ gmail _dot_ com
+Copyright : Jefty E. Negapatan - jeftyneg _at_ gmail _dot_ com
 License : GNU Lesser General Public License(see files COPYING and COPYING.LESSER)
-Website : http://liblogger.sourceforge.net
+Website : http://code.google.com/p/c-logger/
 ---------------------------------------------------------
 
 BUILDING - UNIX
 ----------------
-liblogger uses scons (http://scons.org) build system.
-You may need to install scons from the above system.
+c-logger uses NetBeans as IDE but can be built without using the IDE.
 The sources are available under the folder src.
-To build run "scons" from the folder src/build.
-To see various build options, run the command "scons -h" under folder src/build.
-ex : To build in release mode with O3 optimization, use "scons RELEASE=1"
-ex : To cross compile for arm, use "scons CROSS_COMPILE=arm-linux- "
+To build run "make" from the folder src/build/linux/logserver.
+ex : To build in release mode, use "make CONF=Release"
+ex : To cross compile for arm, use "make CROSS_COMPILE=arm-linux-"
 
 This generates :
 * The shared library : liblogger.so
-* The static library : liblogger.lib
-* The test app, to run the test app :
-  $export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
-  $./logger_test
 
+c-logger includes testapp to test c-logger.
+To build run "make" from the folder src/build/linux/testapp.
+ex : To build in release mode, use "make CONF=Release"
+ex : To cross compile for arm, use "make CROSS_COMPILE=arm-linux-"
+* To run the test app :
+  $export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+  $./testapp
 
 BUILDING - WINDOWS
 ----------------
@@ -29,27 +30,20 @@ For windows, the Visual Studio solution is provided under folder src/build/liblo
 
 TEST APP
 ----------
-The best way to understand the usage of liblogger is to go through the test apps :
+The best way to understand the usage of c-logger is to go through the test apps :
 * src/testapp
-* src/testapp/file_logger_tests/
 
 DOCUMENTATION
 ----------------
-Documentation is provided at the website : http://liblogger.sourceforge.net,
+Documentation is provided at the website : http://code.google.com/p/c-logger/,
 alternatively you can build the documentation  if you have doxygen installed.
 Under the folder docs/ run command "gendoc.sh" and the html docs are generated in ./docs/docs/html
 
-DOUBTS / BUGS / SUGGESTIONS
+BUGS / SUGGESTIONS
 ----------------------------
-If you have any doubts, 
-* at the users mailing list : http://sourceforge.net/mail/?group_id=202343
-* you can ask them at the discussion forum: http://sourceforge.net/forum/forum.php?forum_id=721800
+Pls file the bug reports here: http://code.google.com/p/c-logger/issues/list
 
-Pls file the bug reports here: http://sourceforge.net/tracker/?group_id=202343&atid=981202
-
-Pls file the feature requests and new ideas here: http://sourceforge.net/tracker/?group_id=202343&atid=981205
-
-You can also mail the developer(s) at nvineeth _A_T_ gmail _D_O_T_ com
+You can also mail the developer(s) at jeftyneg _A_T_ gmail _D_O_T_ com
 
 -------------
-Thanks for your interest in liblogger, hope it will be helpful...
+Thanks for your interest in c-logger, hope it will be helpful...
