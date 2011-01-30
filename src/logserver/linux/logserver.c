@@ -25,9 +25,14 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <time.h>
 
-static void print_data(void* data, size_t data_size);
+#define LOGSERVER_LOG_FILENAME_FORMAT	"%Y-%m-%d_%H.%M.%S.log"
+
+static void print_data(FILE *dest, void *data, size_t data_size);
 static void print_usage();
+static FILE *open_logfile();
+static void close_logfile(FILE *logfile);
 
 int main(int argc, char *argv[]) {
 	int sockfd;
@@ -36,8 +41,10 @@ int main(int argc, char *argv[]) {
 	uint16_t portno;
 	socklen_t clilen;
 	char *buffer;
-	struct sockaddr_in serv_addr, cli_addr;
+	struct sockaddr_in serv_addr;
+	struct sockaddr_in cli_addr;
 	int n;
+	FILE *logfile;
 	if (argc != 3) {
 		print_usage();
 		goto EXIT_FUNC;
@@ -74,15 +81,18 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "ERROR on accept");
 			goto EXIT_SOCKFD;
 		}
+		logfile = open_logfile();
 		while ((n = read(newsockfd, buffer, buffer_size)) > 0) {
 			if (n < 0) {
 				fprintf(stderr, "ERROR reading from socket");
 				goto EXIT_NEWSOCKFD;
 			}
-			print_data(buffer, n);
+			print_data(stdout, buffer, n);
+			print_data(logfile, buffer, n);
 		}
 EXIT_NEWSOCKFD:
 		close(newsockfd);
+		close_logfile(logfile);
 	}
 EXIT_SOCKFD:
 	close(sockfd);
@@ -91,13 +101,15 @@ EXIT_FUNC:
 	return 0;
 }
 
-static void print_data(void* data, size_t data_size) {
+static void print_data(FILE *dest, void *data, size_t data_size) {
 	uint8_t *buffer;
 
 	buffer = (uint8_t *) data;
 
 	while (data_size--) {
-		fputc(*buffer, stdout);
+		if(*buffer > 0) {
+			fputc(*buffer, dest);
+		}
 		buffer++;
 	}
 }
@@ -105,4 +117,30 @@ static void print_data(void* data, size_t data_size) {
 static void print_usage() {
 	puts("logserver PORT BUF_MAX_SIZE");
 	puts("Example: logserver 50007 1024");
+}
+
+static FILE *open_logfile()
+{
+	FILE *logfile;
+	char log_filename[24];
+	time_t cur_time;
+	struct tm *time_s;
+	size_t nRet;
+
+	logfile = NULL;
+
+	cur_time = time(NULL);
+	time_s = localtime(&cur_time);
+	nRet = strftime(log_filename, sizeof (log_filename),
+			LOGSERVER_LOG_FILENAME_FORMAT, time_s);
+	if(nRet > 0) {
+		logfile = fopen(log_filename, "wb");
+	}
+
+	return logfile;
+}
+
+static void close_logfile(FILE *logfile)
+{
+	fclose(logfile);
 }
