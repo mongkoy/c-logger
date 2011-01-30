@@ -55,4 +55,4 @@ int PLSockSend(tPLSocket sock,const void* data,const int dataSize);
  * */
 void PLDestroySocket(tPLSocket * sock);
 
-#endif // __PLSOCKET_H__
+#endif /* #ifndef __PLSOCKET_H__ */

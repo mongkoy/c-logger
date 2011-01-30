@@ -40,11 +40,11 @@ int PLCreateConnectedSocket(const char* server, int port, tPLSocket *sock)
 	}
 	else
 	{
-		//----------------------
+		/*----------------------*/
 		struct sockaddr_in clientService; 
 		int iResult  = 0;
 		SOCKET _sock = 0;
-		// Initialize Winsock
+		/* Initialize Winsock */
 		WSADATA wsaData;
 		iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 		if (iResult != NO_ERROR)
@@ -53,24 +53,26 @@ int PLCreateConnectedSocket(const char* server, int port, tPLSocket *sock)
 			goto WSA_CLEANUP_EXIT;
 		}
 
-
-		//----------------------
-		// Create a SOCKET for connecting to server
+		/* ----------------------
+		 * Create a SOCKET for connecting to server
+		 */
 		_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if ( _sock == INVALID_SOCKET ) {
 			fprintf(stderr,"Error at socket(): %ld\n", WSAGetLastError());
 			goto WSA_CLEANUP_EXIT;
 		}
 
-		//----------------------
-		// The sockaddr_in structure specifies the address family,
-		// IP address, and port of the server to be connected to.
+		/* ----------------------
+		 * The sockaddr_in structure specifies the address family,
+		 * IP address, and port of the server to be connected to.
+		 */
 		clientService.sin_family = AF_INET;
 		clientService.sin_addr.s_addr = inet_addr( server );
 		clientService.sin_port = htons( port );
 
-		//----------------------
-		// Connect to server.
+		/* ----------------------
+		 * Connect to server.
+		 */
 		if ( connect( _sock, (SOCKADDR*) &clientService, sizeof(clientService) ) == SOCKET_ERROR) {
 			fprintf(stderr, "Failed to connect.\n" );
 			goto WSA_CLEANUP_EXIT;
@@ -105,7 +107,7 @@ void PLDestroySocket(tPLSocket * sock)
 {
 	if(!sock)
 	{
-		// invalid args.
+		/* invalid args. */
 		fprintf(stderr,"invalid args to %s",__func__);
 		return;
 	}

@@ -43,7 +43,7 @@ int PLCreateConnectedSocket(const char* server, int port, tPLSocket *sock)
 	}
 	else
 	{
-		struct sockaddr_in their_addr; // connector's address information 
+		struct sockaddr_in their_addr; /* connector's address information */
 		int _sock = -1;
 		*sock = (tPLSocket)-1;
 
@@ -52,10 +52,10 @@ int PLCreateConnectedSocket(const char* server, int port, tPLSocket *sock)
 			return -1;
 		}
 
-		their_addr.sin_family = AF_INET;    // host byte order 
-		their_addr.sin_port = htons( port );  // short, network byte order 
+		their_addr.sin_family = AF_INET;    /* host byte order */
+		their_addr.sin_port = htons( port );  /* short, network byte order */
 		their_addr.sin_addr.s_addr = inet_addr( server );
-		memset(&(their_addr.sin_zero), '\0', 8);  // zero the rest of the struct 
+		memset(&(their_addr.sin_zero), '\0', 8);  /* zero the rest of the struct */
 
 		if (connect(_sock, (struct sockaddr *)&their_addr,
 					sizeof(struct sockaddr)) == -1) 
@@ -64,7 +64,7 @@ int PLCreateConnectedSocket(const char* server, int port, tPLSocket *sock)
 			perror("connect");
 			return -1;
 		}
-		// connection succeeded.
+		/* connection succeeded. */
 		*sock = (tPLSocket)_sock;
 		return 0;
 	}
@@ -88,7 +88,7 @@ void PLDestroySocket(tPLSocket * sock)
 {
 	if(!sock)
 	{
-		// invalid args.
+		/* invalid args. */
 		fprintf(stderr,"invalid args to %s",__func__);
 		return;
 	}

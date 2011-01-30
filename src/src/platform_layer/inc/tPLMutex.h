@@ -41,4 +41,4 @@ int PLUnLockMutex(tPLMutex mutex);
 /** Destroy the mutex. */
 int PLDestroyMutex(tPLMutex* mutex);
 
-#endif // __T_PLMUTEX_H__
+#endif /* #ifndef __T_PLMUTEX_H__ */

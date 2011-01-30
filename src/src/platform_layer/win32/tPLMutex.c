@@ -30,16 +30,16 @@ int PLCreateMutex(tPLMutex* mutex)
 	else
 	{
 		HANDLE _mutex = CreateMutex( 
-				NULL,              // default security attributes
-				FALSE,             // initially not owned
-				NULL);             // unnamed mutex
+				NULL,              /* default security attributes */
+				FALSE,             /* initially not owned */
+				NULL);             /* unnamed mutex */
 		if ( !_mutex)
 		{
 			fprintf(stderr,"Mutex creation failed.");
 			return -1;
 		}
 		*mutex = _mutex;
-		return 0; // success.
+		return 0; /* success. */
 	}
 }
 /** Lock the mutex. */
@@ -49,7 +49,7 @@ int PLLockMutex(tPLMutex mutex)
 		return -1;
 	if( WaitForSingleObject(mutex,INFINITE) != WAIT_OBJECT_0 )
 	{
-		// locking failed.
+		/* locking failed. */
 		return -1;
 	}
 	return 0;
@@ -62,8 +62,10 @@ int PLUnLockMutex(tPLMutex mutex)
 		return -1;
 	if( ReleaseMutex (mutex) == 0  )
 	{
-		//If the function succeeds, the return value is nonzero.
-		// unlocking failed.
+		/*
+		 * If the function succeeds, the return value is nonzero.
+		 * unlocking failed.
+		 */
 		return -1;
 	}
 	return 0;
@@ -76,7 +78,7 @@ int PLDestroyMutex(tPLMutex* mutex)
 		return -1;
 	if( CloseHandle( (HANDLE)*mutex ) != 0 )
 	{
-		// destroy failed.
+		/* destroy failed. */
 		return -1;
 	}
 	*mutex = 0;
