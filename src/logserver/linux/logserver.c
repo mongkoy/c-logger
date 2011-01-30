@@ -115,7 +115,7 @@ static void print_data(FILE *dest, void *data, size_t data_size) {
 }
 
 static void print_usage() {
-	puts("logserver PORT BUF_MAX_SIZE");
+	puts("usage: logserver PORT BUF_MAX_SIZE");
 	puts("Example: logserver 50007 1024");
 }
 
