@@ -59,11 +59,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Release.mk dist/Release/GNU-Linux-x86/liblogger.so
+	"${MAKE}"  -f nbproject/Makefile-Release.mk dist/Release/liblogger.so
 
-dist/Release/GNU-Linux-x86/liblogger.so: ${OBJECTFILES}
-	${MKDIR} -p dist/Release/GNU-Linux-x86
-	${LINK.c} -shared -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/liblogger.so -s -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/Release/liblogger.so: ${OBJECTFILES}
+	${MKDIR} -p dist/Release
+	${LINK.c} -shared -o ${CND_DISTDIR}/${CND_CONF}/liblogger.so -s -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/_ext/1386528437/socket_logger.o: ../../../src/socket_logger.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437
@@ -101,7 +101,7 @@ ${OBJECTDIR}/_ext/1386528437/file_logger.o: ../../../src/file_logger.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Release
-	${RM} dist/Release/GNU-Linux-x86/liblogger.so
+	${RM} dist/Release/liblogger.so
 
 # Subprojects
 .clean-subprojects:

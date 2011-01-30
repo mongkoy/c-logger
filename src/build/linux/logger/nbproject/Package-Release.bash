@@ -11,7 +11,7 @@ CND_CONF=Release
 CND_DISTDIR=dist
 NBTMPDIR=build/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/liblogger.so
+OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/liblogger.so
 OUTPUT_BASENAME=liblogger.so
 PACKAGE_TOP_DIR=liblogger.so/
 

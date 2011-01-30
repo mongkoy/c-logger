@@ -59,11 +59,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Debug.mk dist/Debug/GNU-Linux-x86/liblogger.so
+	"${MAKE}"  -f nbproject/Makefile-Debug.mk dist/Debug/liblogger.so
 
-dist/Debug/GNU-Linux-x86/liblogger.so: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug/GNU-Linux-x86
-	${LINK.c} -shared -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/liblogger.so -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/Debug/liblogger.so: ${OBJECTFILES}
+	${MKDIR} -p dist/Debug
+	${LINK.c} -shared -o ${CND_DISTDIR}/${CND_CONF}/liblogger.so -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/_ext/1386528437/socket_logger.o: ../../../src/socket_logger.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437
@@ -101,7 +101,7 @@ ${OBJECTDIR}/_ext/1386528437/file_logger.o: ../../../src/file_logger.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Debug
-	${RM} dist/Debug/GNU-Linux-x86/liblogger.so
+	${RM} dist/Debug/liblogger.so
 
 # Subprojects
 .clean-subprojects:

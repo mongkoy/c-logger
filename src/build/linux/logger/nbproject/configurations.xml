@@ -83,6 +83,9 @@
           <commandLine>-Wextra</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/liblogger.so</output>
+        </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="2">
@@ -112,6 +115,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/liblogger.so</output>
           <stripSymbols>true</stripSymbols>
         </linkerTool>
       </compileType>
