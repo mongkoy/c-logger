@@ -131,9 +131,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogTrace(fmt, ...) LogStub_vm(Trace,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogTrace(fmt, ...) LogStub_vm(Trace,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogTrace(fmt, ...) LogStub_vm(Trace,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogTrace(fmt, ...) LogStub_vm(Trace,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Trace level. */
@@ -153,9 +153,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogDebug(fmt, ...) LogStub_vm(Debug,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogDebug(fmt, ...) LogStub_vm(Debug,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogDebug(fmt, ...) LogStub_vm(Debug,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogDebug(fmt, ...) LogStub_vm(Debug,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Debug level. */
@@ -175,9 +175,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogInfo(fmt, ...) LogStub_vm(Info,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogInfo(fmt, ...) LogStub_vm(Info,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogInfo(fmt, ...) LogStub_vm(Info,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogInfo(fmt, ...) LogStub_vm(Info,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Info level. */
@@ -197,9 +197,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogWarn(fmt, ...) LogStub_vm(Warn,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogWarn(fmt, ...) LogStub_vm(Warn,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogWarn(fmt, ...) LogStub_vm(Warn,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogWarn(fmt, ...) LogStub_vm(Warn,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Warn level. */
@@ -219,9 +219,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogError(fmt, ...) LogStub_vm(Error,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogError(fmt, ...) LogStub_vm(Error,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogError(fmt, ...) LogStub_vm(Error,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogError(fmt, ...) LogStub_vm(Error,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Error level. */
@@ -241,9 +241,9 @@ typedef enum LogDest
 		#ifdef VARIADIC_MACROS
 			#if defined(DISABLE_FILENAMES)
 				/* the filename should be disabled. */
-				#define LogFatal(fmt, ...) LogStub_vm(Fatal,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogFatal(fmt, ...) LogStub_vm(Fatal,PLGetCurTimeInMillis(),LOG_MODULE_NAME,"",__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#else 
-				#define LogFatal(fmt, ...) LogStub_vm(Fatal,liblogger_GetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
+				#define LogFatal(fmt, ...) LogStub_vm(Fatal,PLGetCurTimeInMillis(),LOG_MODULE_NAME,__FILE__,__func__, __LINE__ , fmt , ## __VA_ARGS__)
 			#endif /* #if defined(DISABLE_FILENAMES) */
 		#else
 			/** Emit a log with Fatal level. */
