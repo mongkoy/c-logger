@@ -17,6 +17,7 @@
  */
 #include "file_logger_impl.h"
 #include "LLTimeUtil.h"
+#include "log_util.h"
 #include <stdio.h>
 #include <memory.h>
 
@@ -49,9 +50,6 @@ static int sFileFuncLogExit(LogWriter * _this,
 
 /** File Logger object function deinitialization function */
 static int sFileLoggerDeInit(LogWriter* _this);
-
-/* helper function to get the log prefix , the log prefix is added to help in greping*/
-static const char* sGetLogPrefix(const LogLevel logLevel);
 
 /** The File logger object. */
 typedef struct FileLogWriter
@@ -278,21 +276,6 @@ int sFileLoggerDeInit(LogWriter* _this)
 	flw->rollbackSize = 0;
 #endif // _ENABLE_LL_ROLLBACK_
 	return 0;
-}
-
-/* helper function to get the log prefix */
-static const char* sGetLogPrefix(const LogLevel logLevel)
-{
-	switch (logLevel)
-	{
-		case Trace:	return "[T]";
-		case Debug: return "[D]";
-		case Info:	return "[I]";
-		case Warn:	return "[W]";
-		case Error:	return "[E]";
-		case Fatal:	return "[F]";
-		default:	return "";
-	}
 }
 
 #ifdef _ENABLE_LL_ROLLBACK_

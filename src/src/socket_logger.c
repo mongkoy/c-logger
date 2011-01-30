@@ -19,6 +19,7 @@
 #include "tPLSocket.h"
 #include "LLTimeUtil.h"
 #include "win32_support.h"
+#include "log_util.h"
 
 /** The maximum size of the log. */
 #define BUF_MAX 1024
@@ -37,9 +38,6 @@ int sSockFuncLogEntry(LogWriter *_this,const char* funcName);
 int sSockFuncLogExit(LogWriter* _this,const char* funcName,const int lineNumber);
 
 int sSockLoggerDeInit(LogWriter* _this);
-
-/* helper function to get the log prefix */
-static const char* sGetLogPrefix(const LogLevel logLevel);
 
 typedef struct SockLogWriter
 {
@@ -191,19 +189,4 @@ int sSockLoggerDeInit(LogWriter* _this)
 		PLDestroySocket(&slw->sock);
 	}
 	return 0;
-}
-
-/* helper function to get the log prefix */
-static const char* sGetLogPrefix(const LogLevel logLevel)
-{
-	switch (logLevel)
-	{
-		case Trace:	return "[T]";
-		case Debug: return "[D]";
-		case Info:	return "[I]";
-		case Warn:	return "[W]";
-		case Error:	return "[E]";
-		case Fatal:	return "[F]";
-		default:	return "";
-	}
 }

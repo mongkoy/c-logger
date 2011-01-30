@@ -50,6 +50,8 @@
       <itemPath>../../../src/file_logger.c</itemPath>
       <itemPath>../../../src/file_logger_impl.h</itemPath>
       <itemPath>../../../src/liblogger.c</itemPath>
+      <itemPath>../../../src/log_util.c</itemPath>
+      <itemPath>../../../src/log_util.h</itemPath>
       <itemPath>../../../src/socket_logger.c</itemPath>
       <itemPath>../../../src/socket_logger_impl.h</itemPath>
       <itemPath>../../../src/win32_support.h</itemPath>
