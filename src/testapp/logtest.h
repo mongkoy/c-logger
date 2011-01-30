@@ -6,4 +6,4 @@ int TestFuncDebug();
 int TestNoFilename();
 int TestFuncMin();
 int TestFuncNoLogs();
-#endif // __LOG_TEST_H__
+#endif /* __LOG_TEST_H__ */
