@@ -37,4 +37,4 @@ int InitFileLogger(LogWriter** logWriter,tFileLoggerInitParams* initParams );
  * */
 int InitConsoleLogger(LogWriter** logWriter,void* initParams);
 
-#endif // __FILE_LOGGER_IMPL_H__
+#endif /* #ifndef __FILE_LOGGER_IMPL_H__ */

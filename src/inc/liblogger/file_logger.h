@@ -37,7 +37,7 @@ typedef enum tFileOpenMode
 	 * by \ref tFileLoggerInitParams::rollbackSize is reached.
 	 * */
 	RollbackMode
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 } tFileOpenMode;
 
 /** File Logger Initialization parameters. */
@@ -52,7 +52,7 @@ typedef struct tFileLoggerInitParams
 	 * is equal \ref tFileOpenMode::RollbackMode "RollbackMode"
 	 * */
 	unsigned long	rollbackSize;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 }tFileLoggerInitParams;
 
-#endif // __FILE_LOGGER_H__
+#endif /* #ifndef __FILE_LOGGER_H__ */

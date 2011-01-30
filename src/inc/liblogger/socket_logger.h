@@ -27,4 +27,4 @@ typedef struct tSockLoggerInitParams
 	int		port;
 }tSockLoggerInitParams;
 
-#endif // __SOCKET_LOGGER_H__
+#endif /* #ifndef __SOCKET_LOGGER_H__ */

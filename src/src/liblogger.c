@@ -26,7 +26,7 @@
 #else
 	#define __LOCK_MUTEX 	/* NOP */
 	#define __UNLOCK_MUTEX	/* NOP */
-#endif // DISABLE_THREAD_SAFETY
+#endif /* #ifndef DISABLE_THREAD_SAFETY */
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -95,7 +95,7 @@ int InitLogger(LogDest ldest,void* loggerInitParams)
 			{
 				if( -1 == InitConsoleLogger(&pLogWriter,loggerInitParams) )
 				{
-					// control should never reach here, this should alwasy succeed.
+					/* control should never reach here, this should always succeed. */
 					fprintf(stderr,"\n [liblogger] could not initialize console logger \n");
 					retVal = -1;
 					goto UNLOCK_RETURN;
@@ -118,7 +118,7 @@ int InitLogger(LogDest ldest,void* loggerInitParams)
 	retVal = 0;
 UNLOCK_RETURN:
 	__UNLOCK_MUTEX;
-	return retVal; // success.
+	return retVal; /* success. */
 }
 
 /** Deinitialize the logger, the file / socket is closed here. */
@@ -137,6 +137,7 @@ void DeInitLogger()
 
 int vsLogStub(LogLevel logLevel,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,const char* file,
 		const char* funcName, const int lineNum,
 #endif
@@ -149,7 +150,7 @@ int vsLogStub(LogLevel logLevel,
 
 	retVal = pLogWriter->log(pLogWriter,logLevel,
 #ifdef VARIADIC_MACROS
-			moduleName,file,funcName,lineNum,
+			curTimeInMillis,moduleName,file,funcName,lineNum,
 #endif
 			fmt,ap);
 
@@ -160,6 +161,7 @@ int vsLogStub(LogLevel logLevel,
 
 #ifdef VARIADIC_MACROS
 int LogStub_vm(LogLevel logLevel,
+		const uint64_t curTimeInMillis,
 		const char* moduleName,const char* file,
 		const char* funcName, const int lineNum,
 		const char* fmt,...)
@@ -168,7 +170,7 @@ int LogStub_vm(LogLevel logLevel,
 	va_list ap; 
 	int retVal = 0;
 	va_start(ap,fmt);
-	retVal = vsLogStub(logLevel,moduleName,file,funcName,lineNum,fmt,ap);
+	retVal = vsLogStub(logLevel,curTimeInMillis,moduleName,file,funcName,lineNum,fmt,ap);
 	va_end(ap);
 	return retVal;
 }
@@ -236,7 +238,7 @@ int LogFatal (const char* fmt,...)
 }
 
 
-#endif // VARIADIC_MACROS
+#endif /* #ifdef VARIADIC_MACROS */
 
 int FuncLogEntry(const char* funcName)
 {

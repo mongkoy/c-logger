@@ -51,5 +51,5 @@ typedef enum LogLevel
 
 /** @} */
 
-#endif // __EXP_LOGGER_CONFIG_H__
+#endif /* #ifndef __EXP_LOGGER_CONFIG_H__ */
 

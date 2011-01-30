@@ -23,4 +23,4 @@
 #define snprintf _snprintf
 #endif
 
-#endif // __WIN32_SUPPORT_H__
+#endif /* __WIN32_SUPPORT_H__ */

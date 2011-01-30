@@ -29,4 +29,4 @@
  * */
 int InitSocketLogger(LogWriter** logWriter,tSockLoggerInitParams *initparams);
 
-#endif // __SOCKET_LOGGER_IMPL_H__
+#endif /* #ifndef __SOCKET_LOGGER_IMPL_H__ */

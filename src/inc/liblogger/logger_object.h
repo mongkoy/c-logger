@@ -25,6 +25,7 @@
 struct LogWriter;
 typedef int (*Log)(struct LogWriter* _this,const LogLevel logLevel,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,
 		const char* file,const char* funcName, const int lineNum, 
 #endif
@@ -48,4 +49,4 @@ typedef struct LogWriter
 }LogWriter;
 
 
-#endif // __LOGGER_OBJECT_H__
+#endif /* #ifndef __LOGGER_OBJECT_H__ */

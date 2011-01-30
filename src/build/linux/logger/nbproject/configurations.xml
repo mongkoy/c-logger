@@ -47,8 +47,6 @@
           <itemPath>../../../src/platform_layer/posix/tPLTime.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../../../src/LLTimeUtil.c</itemPath>
-      <itemPath>../../../src/LLTimeUtil.h</itemPath>
       <itemPath>../../../src/file_logger.c</itemPath>
       <itemPath>../../../src/file_logger_impl.h</itemPath>
       <itemPath>../../../src/liblogger.c</itemPath>

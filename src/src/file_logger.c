@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "file_logger_impl.h"
-#include "LLTimeUtil.h"
 #include "log_util.h"
 #include <stdio.h>
 #include <memory.h>
@@ -36,6 +35,7 @@
 static int sWriteToFile(LogWriter *_this,
 		const LogLevel logLevel ,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,
 		const char* file,const char* funcName, const int lineNum, 
 #endif
@@ -60,7 +60,7 @@ typedef struct FileLogWriter
 	/** The rollback size, if \ref tFileOpenMode::RollbackMode is specified.
 	 * if rollback is not aplicable, then it will be 0*/
 	unsigned long rollbackSize;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 	/** The log file pointer. */
 	FILE		*fp;
 }FileLogWriter;
@@ -68,19 +68,19 @@ typedef struct FileLogWriter
 #ifdef _ENABLE_LL_ROLLBACK_
 /** function to check and rollback the file, once the indicated size is reached. */
 static void __CHECK_AND_ROLLBACK(FileLogWriter* flw);
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 
 static FileLogWriter sFileLogWriter = 
 {
 	{
-		/*.base.log				= */sWriteToFile,
-		/*.base.logFuncEntry	= */ sFileFuncLogEntry,
-		/*.base.logFuncExit		= */sFileFuncLogExit,
+		/*.base.log		= */sWriteToFile,
+		/*.base.logFuncEntry	= */sFileFuncLogEntry,
+		/*.base.logFuncExit	= */sFileFuncLogExit,
 		/*.base.loggerDeInit	= */sFileLoggerDeInit,
 	},
 #ifdef _ENABLE_LL_ROLLBACK_
 	/*.rollbackSize		= */ 0,
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 		/* .fp					= */ 0
 };
 
@@ -89,7 +89,6 @@ static FileLogWriter sFileLogWriter =
  * */
 int InitConsoleLogger(LogWriter** logWriter,void* dest)
 {
-	char curDateTime[32];	
 	if(!logWriter)
 	{
 		fprintf(stderr,"Invalid args to function InitFileLogger\n");
@@ -108,12 +107,10 @@ int InitConsoleLogger(LogWriter** logWriter,void* dest)
 	}
 #ifdef _ENABLE_LL_ROLLBACK_
 	sFileLogWriter.rollbackSize = 0;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 	sFileLogWriter.fp = dest;
-	if( !LLGetCurDateTime(curDateTime,sizeof(curDateTime)) )
-		fprintf(sFileLogWriter.fp,"\n----- Logging Started on %s -----\n", curDateTime);
 	*logWriter = (LogWriter*)&sFileLogWriter;
-	return 0; // success!
+	return 0; /* success! */
 }
 
 /* Function to initialize the file logger.
@@ -149,7 +146,7 @@ int InitFileLogger(LogWriter** logWriter,tFileLoggerInitParams* initParams)
 		case AppendMode: 	fileOpenMode = "a"; break;
 #ifdef _ENABLE_LL_ROLLBACK_
 		case RollbackMode:	fileOpenMode = "w+"; break;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 		default:			fileOpenMode = "w"; break;
 	}
 
@@ -161,11 +158,6 @@ int InitFileLogger(LogWriter** logWriter,tFileLoggerInitParams* initParams)
 	}
 	else
 	{
-		/* file open success. */
-		char curDateTime[32];	
-		if( !LLGetCurDateTime(curDateTime,sizeof(curDateTime)) )
-			fprintf(sFileLogWriter.fp,"\n----- Logging Started on %s -----\n", curDateTime);
-
 #ifdef _ENABLE_LL_ROLLBACK_
 		/* if the file open is successful, and rollback mode is specified, note down the
 		 * rollback size. 
@@ -178,18 +170,19 @@ int InitFileLogger(LogWriter** logWriter,tFileLoggerInitParams* initParams)
 		}
 		else
 			sFileLogWriter.rollbackSize = 0;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 	}
 
 	/* Log the current date time when the log is started. */
 	*logWriter = (LogWriter*)&sFileLogWriter;
-	return 0; // success!
+	return 0; /* success! */
 }
 
 /** Helper function to write the logs to file */
 static int sWriteToFile(LogWriter *_this,
 		const LogLevel logLevel,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,
 		const char* file,const char* funcName, const int lineNum, 
 #endif
@@ -203,16 +196,17 @@ static int sWriteToFile(LogWriter *_this,
 	}
 	else
 	{
-		fprintf(flw->fp,"%s",sGetLogPrefix(logLevel));
+		fprintf(flw->fp, "[%s]", sGetLogPrefix(logLevel));
 #ifdef VARIADIC_MACROS
-		fprintf(flw->fp,"%s:%s:%s:%d:",moduleName,file,funcName,lineNum);
+		fprintf(flw->fp,"[%llu][%s:%s:%s:%d]",curTimeInMillis,
+			moduleName,file,funcName,lineNum);
 #endif
 		vfprintf(flw->fp,fmt,ap); 
 		fprintf(flw->fp,"\n");
 		fflush(flw->fp);
 #ifdef _ENABLE_LL_ROLLBACK_
 		__CHECK_AND_ROLLBACK(flw);
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 		return 0;
 	}
 }
@@ -233,7 +227,7 @@ static int sFileFuncLogEntry(LogWriter *_this,const char* funcName)
 		fflush(flw->fp);
 #ifdef _ENABLE_LL_ROLLBACK_
 		__CHECK_AND_ROLLBACK(flw);
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 		return bytes_written;
 	}
 		
@@ -256,7 +250,7 @@ static int sFileFuncLogExit(LogWriter * _this,
 		fflush(flw->fp);
 #ifdef _ENABLE_LL_ROLLBACK_
 		__CHECK_AND_ROLLBACK(flw);
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 		return bytes_written;
 	}
 }
@@ -274,7 +268,7 @@ int sFileLoggerDeInit(LogWriter* _this)
 	flw->fp = 0;
 #ifdef _ENABLE_LL_ROLLBACK_
 	flw->rollbackSize = 0;
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
 	return 0;
 }
 
@@ -295,4 +289,4 @@ static void __CHECK_AND_ROLLBACK(FileLogWriter* flw)
 		}
 	} 
 }
-#endif // _ENABLE_LL_ROLLBACK_
+#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */

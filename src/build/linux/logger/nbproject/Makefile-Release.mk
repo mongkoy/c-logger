@@ -36,7 +36,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1386528437/socket_logger.o \
 	${OBJECTDIR}/_ext/1967181203/tPLMutex.o \
 	${OBJECTDIR}/_ext/1967181203/tPLSocket.o \
-	${OBJECTDIR}/_ext/1386528437/LLTimeUtil.o \
 	${OBJECTDIR}/_ext/1386528437/liblogger.o \
 	${OBJECTDIR}/_ext/1967181203/tPLTime.o \
 	${OBJECTDIR}/_ext/1386528437/log_util.o \
@@ -81,11 +80,6 @@ ${OBJECTDIR}/_ext/1967181203/tPLSocket.o: ../../../src/platform_layer/posix/tPLS
 	${MKDIR} -p ${OBJECTDIR}/_ext/1967181203
 	${RM} $@.d
 	$(COMPILE.c) -O2 -Wall -s -I../../../inc -I../../../src/platform_layer/inc -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1967181203/tPLSocket.o ../../../src/platform_layer/posix/tPLSocket.c
-
-${OBJECTDIR}/_ext/1386528437/LLTimeUtil.o: ../../../src/LLTimeUtil.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437
-	${RM} $@.d
-	$(COMPILE.c) -O2 -Wall -s -I../../../inc -I../../../src/platform_layer/inc -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1386528437/LLTimeUtil.o ../../../src/LLTimeUtil.c
 
 ${OBJECTDIR}/_ext/1386528437/liblogger.o: ../../../src/liblogger.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437

@@ -17,17 +17,17 @@
  */
 #include "socket_logger_impl.h"
 #include "tPLSocket.h"
-#include "LLTimeUtil.h"
-#include "win32_support.h"
 #include "log_util.h"
+#include "win32_support.h"
 
 /** The maximum size of the log. */
-#define BUF_MAX 1024
+#define BUF_MAX 128
 
 /** Helper function to print the logs to a buffer and send to a socket or
  * other consumer */
 static int sSendToSock(LogWriter *_this,const LogLevel logLevel,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,
 		const char* file,const char* funcName, const int lineNum, 
 #endif
@@ -48,7 +48,7 @@ typedef struct SockLogWriter
 static SockLogWriter sSockLogWriter = 
 {
 	{
-		/* .base.log 			= */sSendToSock, 
+		/* .base.log 		= */sSendToSock, 
 		/* .base.logFuncEntry 	= */sSockFuncLogEntry,
 		/* .base.logFuncExit	= */sSockFuncLogExit,
 		/* .base.loggerDeInit 	= */sSockLoggerDeInit,	
@@ -75,27 +75,15 @@ int InitSocketLogger(LogWriter** logWriter,tSockLoggerInitParams *initParams)
 		fprintf(stderr,"could not connect to log server %s:%d",initParams->server,initParams->port);
 		return -1;
 	}
-	else
-	{
-		/* socket was opened successfully, emit the current date / time. */
-		char curDateTime[32];	
-		char tempBuf[128];
-		if( !LLGetCurDateTime(curDateTime,sizeof(curDateTime)) )
-		{
-			int bytes = snprintf(tempBuf,sizeof(tempBuf),"\n----- Logging Started on %s -----\n",curDateTime);
-			if( (bytes == -1) || ((size_t)bytes > sizeof(tempBuf)) )
-				bytes = sizeof(tempBuf);
-			PLSockSend(sSockLogWriter.sock,tempBuf,bytes);
-		}
-	}
 	*logWriter = (LogWriter*)&sSockLogWriter;
-	return 0; // success!
+	return 0; /* success! */
 }
 
 /** Helper function to print the logs to a buffer and send to a socket or
  * other consumer */
 static int sSendToSock(LogWriter *_this,const LogLevel logLevel,
 #ifdef VARIADIC_MACROS
+		const uint64_t curTimeInMillis,
 		const char* moduleName,
 		const char* file,const char* funcName, const int lineNum, 
 #endif
@@ -112,12 +100,13 @@ static int sSendToSock(LogWriter *_this,const LogLevel logLevel,
 		char buf[BUF_MAX];
 		int bytes = 0;
 #ifdef VARIADIC_MACROS
-		bytes = snprintf(buf,BUF_MAX-1,"\n%s:%s:%s:%s:%d:",sGetLogPrefix(logLevel),
+		bytes = snprintf(buf,BUF_MAX-1,"\n[%s][%llu][%s:%s:%s:%d]",
+				sGetLogPrefix(logLevel),curTimeInMillis,
 				moduleName,file,funcName,lineNum);
 #else
-		bytes = snprintf(buf,BUF_MAX-1,"\n%s",sGetLogPrefix(logLevel));
+		bytes = snprintf(buf,BUF_MAX-1,"\n[%s]",sGetLogPrefix(logLevel));
 #endif
-		// to be on safer side, check if required size is available.
+		/* to be on safer side, check if required size is available. */
 		if(bytes < (BUF_MAX -1) )
 			bytes += vsnprintf(buf+bytes,BUF_MAX-1-bytes,fmt,ap);
 		buf[BUF_MAX-1] = 0;
