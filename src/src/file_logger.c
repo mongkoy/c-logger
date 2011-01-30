@@ -205,7 +205,7 @@ static int sWriteToFile(LogWriter *_this,
 	}
 	else
 	{
-		fprintf(flw->fp,sGetLogPrefix(logLevel));
+		fprintf(flw->fp,"%s",sGetLogPrefix(logLevel));
 #ifdef VARIADIC_MACROS
 		fprintf(flw->fp,"%s:%s:%s:%d:",moduleName,file,funcName,lineNum);
 #endif
