@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1967181203/tPLSocket.o \
 	${OBJECTDIR}/_ext/1386528437/LLTimeUtil.o \
 	${OBJECTDIR}/_ext/1386528437/liblogger.o \
+	${OBJECTDIR}/_ext/1967181203/tPLTime.o \
 	${OBJECTDIR}/_ext/1386528437/log_util.o \
 	${OBJECTDIR}/_ext/1386528437/file_logger.o
 
@@ -90,6 +91,11 @@ ${OBJECTDIR}/_ext/1386528437/liblogger.o: ../../../src/liblogger.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437
 	${RM} $@.d
 	$(COMPILE.c) -O2 -Wall -s -I../../../inc -I../../../src/platform_layer/inc -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1386528437/liblogger.o ../../../src/liblogger.c
+
+${OBJECTDIR}/_ext/1967181203/tPLTime.o: ../../../src/platform_layer/posix/tPLTime.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1967181203
+	${RM} $@.d
+	$(COMPILE.c) -O2 -Wall -s -I../../../inc -I../../../src/platform_layer/inc -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1967181203/tPLTime.o ../../../src/platform_layer/posix/tPLTime.c
 
 ${OBJECTDIR}/_ext/1386528437/log_util.o: ../../../src/log_util.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1386528437

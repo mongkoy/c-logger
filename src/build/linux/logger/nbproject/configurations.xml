@@ -15,6 +15,7 @@
         <itemPath>../../../inc/liblogger/liblogger_levels.h</itemPath>
         <itemPath>../../../inc/liblogger/logger_object.h</itemPath>
         <itemPath>../../../inc/liblogger/socket_logger.h</itemPath>
+        <itemPath>../../../inc/liblogger/tPLTime.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -43,6 +44,7 @@
                        kind="SOURCE_LOGICAL_FOLDER">
           <itemPath>../../../src/platform_layer/posix/tPLMutex.c</itemPath>
           <itemPath>../../../src/platform_layer/posix/tPLSocket.c</itemPath>
+          <itemPath>../../../src/platform_layer/posix/tPLTime.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <itemPath>../../../src/LLTimeUtil.c</itemPath>
