@@ -39,10 +39,6 @@ typedef struct LogWriter
 {
 	/** Member function to log. */
 	Log 			log;
-	/** Member function to log the function entry. */
-	LogFuncEntry 	logFuncEntry;
-	/** Member function to log the function exit. */
-	LogFuncExit		logFuncExit;
 	/** Member function to deinitialize the log writer object, the log writer object will
 	 * not be referenced after this call.*/
 	LoggerDeInit	loggerDeInit;

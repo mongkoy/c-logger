@@ -41,13 +41,6 @@ static int sWriteToFile(LogWriter *_this,
 #endif
 		const char* fmt,va_list ap);
 
-/** File Logger object function to log function entry */
-static int sFileFuncLogEntry(LogWriter *_this,const char* funcName);
-
-/** File Logger object function to log function exit */
-static int sFileFuncLogExit(LogWriter * _this,
-		const char* funcName,const int lineNumber);
-
 /** File Logger object function deinitialization function */
 static int sFileLoggerDeInit(LogWriter* _this);
 
@@ -74,8 +67,6 @@ static FileLogWriter sFileLogWriter =
 {
 	{
 		/*.base.log		= */sWriteToFile,
-		/*.base.logFuncEntry	= */sFileFuncLogEntry,
-		/*.base.logFuncExit	= */sFileFuncLogExit,
 		/*.base.loggerDeInit	= */sFileLoggerDeInit,
 	},
 #ifdef _ENABLE_LL_ROLLBACK_
@@ -210,51 +201,6 @@ static int sWriteToFile(LogWriter *_this,
 		return 0;
 	}
 }
-
-/** File Logger object function to log function entry */
-static int sFileFuncLogEntry(LogWriter *_this,const char* funcName)
-{
-	FileLogWriter *flw = (FileLogWriter*) _this;
-	if(!_this || !flw->fp)
-	{
-		fprintf(stderr,"Invalid args to File Log Writer (Func Entry)\n");
-		return -1;
-	}
-	else
-	{
-		int bytes_written = 0;
-		bytes_written = fprintf(flw->fp,"{ %s \n", funcName);
-		fflush(flw->fp);
-#ifdef _ENABLE_LL_ROLLBACK_
-		__CHECK_AND_ROLLBACK(flw);
-#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
-		return bytes_written;
-	}
-		
-}
-
-/** File Logger object function to log function exit */
-static int sFileFuncLogExit(LogWriter * _this,
-		const char* funcName,const int lineNumber)
-{
-	FileLogWriter *flw = (FileLogWriter*) _this;
-	if(!_this || !flw->fp)
-	{
-		fprintf(stderr,"Invalid args to File Log Writer (Func Exit)\n");
-		return -1;
-	}
-	else
-	{
-		int bytes_written = 0;
-		bytes_written = fprintf(flw->fp,"%s : %d }\n", funcName,lineNumber);
-		fflush(flw->fp);
-#ifdef _ENABLE_LL_ROLLBACK_
-		__CHECK_AND_ROLLBACK(flw);
-#endif /* #ifdef _ENABLE_LL_ROLLBACK_ */
-		return bytes_written;
-	}
-}
-
 
 /** File Logger object function deinitialization function */
 int sFileLoggerDeInit(LogWriter* _this)

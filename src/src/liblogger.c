@@ -237,27 +237,6 @@ int LogFatal (const char* fmt,...)
 	return retVal;
 }
 
-
 #endif /* #ifdef VARIADIC_MACROS */
 
-int FuncLogEntry(const char* funcName)
-{
-	int retVal = 0;
-	CHECK_AND_INIT_LOGGER;
-	__LOCK_MUTEX;
-	retVal = pLogWriter->logFuncEntry(pLogWriter,funcName);
-	__UNLOCK_MUTEX;
-	return retVal;
-}
-
-int FuncLogExit(const char* funcName,const int lineNumber)
-{
-	int retVal = 0;
-	CHECK_AND_INIT_LOGGER;
-	__LOCK_MUTEX;
-	retVal = pLogWriter->logFuncExit(pLogWriter,funcName,lineNumber);
-	__UNLOCK_MUTEX;
-	return retVal;
-}
-
-#endif /* DISABLE_ALL_LOGS */
+#endif /* #ifndef DISABLE_ALL_LOGS */

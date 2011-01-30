@@ -33,10 +33,6 @@ static int sSendToSock(LogWriter *_this,const LogLevel logLevel,
 #endif
 		const char* fmt,va_list ap);
 
-int sSockFuncLogEntry(LogWriter *_this,const char* funcName);
-
-int sSockFuncLogExit(LogWriter* _this,const char* funcName,const int lineNumber);
-
 int sSockLoggerDeInit(LogWriter* _this);
 
 typedef struct SockLogWriter
@@ -49,8 +45,6 @@ static SockLogWriter sSockLogWriter =
 {
 	{
 		/* .base.log 		= */sSendToSock, 
-		/* .base.logFuncEntry 	= */sSockFuncLogEntry,
-		/* .base.logFuncExit	= */sSockFuncLogExit,
 		/* .base.loggerDeInit 	= */sSockLoggerDeInit,	
 	},
 	/* .sock  = */0

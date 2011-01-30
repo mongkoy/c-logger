@@ -259,14 +259,8 @@ typedef enum LogDest
 	#endif
 
 	#if LOG_LEVEL<= LOG_LEVEL_TRACE
-		/* Log Entry to a function. */
-		int FuncLogEntry(const char* funcName);
-		/* Log return from a function. */
-		int FuncLogExit(const char* funcName,const int lineNumber);
-		
-		#define LogFuncEntry()	FuncLogEntry(__func__)
-		#define LogFuncExit()	FuncLogExit(__func__,__LINE__)
-		
+		#define LogFuncEntry()	LogTrace("{ %s", __func__)
+		#define LogFuncExit()	LogTrace("%s : %d }", __func__,__LINE__)
 	#else
 		/* The chosen log level is greater, so this log should be disabled. */
 		#define LogFuncEntry()	/* NOP */
