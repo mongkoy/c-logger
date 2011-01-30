@@ -1,6 +1,6 @@
 /*
  * c-logger - copyright 2011, Jefty E. Negapatan, jeftyneg@gmail.com
- * This file is part of liblogger.
+ * This file is part of c-logger.
  *
  * liblogger is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
