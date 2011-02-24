@@ -24,7 +24,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.apache.log4j.Priority;
-import org.apache.log4j.spi.LoggingEvent;
+import org.liblogger.LoggingEvent;
 import org.logview4j.config.ConfigurationKey;
 import org.logview4j.config.ConfigurationManager;
 import org.logview4j.ui.image.ImageManager;
@@ -83,10 +83,8 @@ public class LogView4JLoggingEvent {
 	 */
 	private final String category;
 	private final int level;
-	private final String[] stackTrace;
 	private final String message;
 	private final long when;
-	private final String fullyQualifiedClassName;
 	private transient String formattedString = null;
 	private transient boolean marked = false;
 	private final long eventId;
@@ -100,9 +98,7 @@ public class LogView4JLoggingEvent {
 		level = e.getLevel().toInt();
 		category = e.getLoggerName();
 		String tempMessage = e.getMessage() != null ? e.getMessage().toString() : null;
-		when = e.timeStamp;
-		fullyQualifiedClassName = e.fqnOfCategoryClass;
-		stackTrace = e.getThrowableStrRep();
+		when = e.getTimestamp();
 		eventId = eventIdGenerator++;
 		combinedTimeStamp = createCombinedTimeStamp();
 
@@ -183,7 +179,7 @@ public class LogView4JLoggingEvent {
 	}
 
 	public String getFullyQualifiedClassName() {
-		return fullyQualifiedClassName;
+		return null;
 	}
 
 	public int getLevel() {
@@ -195,7 +191,7 @@ public class LogView4JLoggingEvent {
 	}
 
 	public String[] getStackTrace() {
-		return stackTrace;
+		return null;
 	}
 
 	public long getWhen() {
@@ -206,8 +202,9 @@ public class LogView4JLoggingEvent {
 		return combinedTimeStamp;
 	}
 
+	/* TODO: Remove this function together with the table format */
 	public boolean getStackTracePresent() {
-		return stackTrace != null;
+		return false;
 	}
 
 	public ImageIcon getIcon() {
@@ -253,12 +250,6 @@ public class LogView4JLoggingEvent {
 			buffer.append("When:      ").append(DATE_FORMAT.format(new Date(when))).append('\n');
 			buffer.append("From:      ").append(getCategory()).append("\n\n");
 			buffer.append(message).append('\n');
-			if (getStackTracePresent()) {
-				buffer.append("\nThrowable: ").append(stackTrace[0]).append('\n');
-				for (int i = 1; i < stackTrace.length; i++) {
-					buffer.append(stackTrace[i]).append('\n');
-				}
-			}
 
 			formattedString = buffer.toString();
 			buffer.setLength(0);
@@ -276,12 +267,6 @@ public class LogView4JLoggingEvent {
 		textToMatch.add(getCategory());
 
 		textToMatch.add(getMessage());
-
-		if (getStackTracePresent()) {
-			for (int i = 0; i < stackTrace.length; i++) {
-				textToMatch.add(stackTrace[i]);
-			}
-		}
 	}
 
 	/**

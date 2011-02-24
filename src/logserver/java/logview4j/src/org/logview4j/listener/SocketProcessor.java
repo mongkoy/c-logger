@@ -19,8 +19,9 @@ package org.logview4j.listener;
 
 import java.io.*;
 import java.net.*;
+import org.liblogger.LoggingEvent;
+import org.liblogger.LoggingEventException;
 
-import org.apache.log4j.spi.*;
 import org.logview4j.dto.*;
 
 /**
@@ -53,49 +54,55 @@ public class SocketProcessor implements Runnable {
 	 * Reads the data from the socket
 	 */
 	protected void readData() {
-		ObjectInputStream in = null;
+		BufferedReader bufferedReader = null;
+		InputStreamReader inputStreamReader = null;
 
 		try {
-			in = new ObjectInputStream(socket.getInputStream());
+			inputStreamReader = new InputStreamReader(socket.getInputStream());
+			bufferedReader = new BufferedReader(inputStreamReader);
 
-			while (true) {
-				LoggingEvent loggingEvent = (LoggingEvent) in.readObject();
-
-				LogView4JLoggingEvent event = new LogView4JLoggingEvent(loggingEvent);
-				loggingEvent = null;
-				fireEvent(event);
+			String log;
+			LoggingEvent loggingEvent;
+			LogView4JLoggingEvent logView4JLoggingEvent;
+			while((log = bufferedReader.readLine()) != null) {
+				try {
+					loggingEvent = LoggingEvent.valueOf(log);
+					logView4JLoggingEvent = new LogView4JLoggingEvent(loggingEvent);
+					loggingEvent = null;
+					fireEvent(logView4JLoggingEvent);
+				} catch (LoggingEventException ex) {
+					ex.printStackTrace();
+				}
 			}
-		} catch (EOFException e) {
-		} catch (SocketException s) {
-		} catch (Throwable t) {
-			t.printStackTrace();
 		}
-
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		/**
-		 * Try to close the input stream and socket
+		 * Try to close the readers and socket
 		 */
-		close(in);
+		if(bufferedReader != null) {
+			try {
+				bufferedReader.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		if(inputStreamReader != null) {
+			try {
+				inputStreamReader.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
 		closeSocket();
 
 		/**
-		 * Null out the input stream and the socket
+		 * Null out the readers and the socket
 		 */
-		in = null;
+		bufferedReader = null;
+		inputStreamReader = null;
 		socket = null;
-	}
-
-	/**
-	 * Closes the input stream
-	 * @param in the input stream
-	 */
-	protected void close(ObjectInputStream in) {
-		if (in != null) {
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
