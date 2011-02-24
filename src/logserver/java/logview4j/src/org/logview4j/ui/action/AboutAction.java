@@ -57,8 +57,6 @@ public class AboutAction extends AbstractAction {
 
 		buffer.append("LogView4J version: ").append(version);
 		buffer.append("<p>");
-		buffer.append("Listening on port: ").append(port);
-		buffer.append("<p>");
 		buffer.append("Author: Josh Passenger");
 
 		buffer.append("</html>");

@@ -59,17 +59,17 @@ public class LogView4JFrame extends JFrame {
 	protected JMenu fileMenu = new JMenu("File");
 	protected JMenu helpMenu = new JMenu("Help");
 
-	public LogView4JFrame() throws LogView4JException {
+	public LogView4JFrame(boolean isOnline) throws LogView4JException {
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-		init();
+		init(isOnline);
 	}
 
-	protected void init() throws LogView4JException {
+	protected final void init(boolean isOnline) throws LogView4JException {
 		setSize(new Dimension(1024, 768));
 
-
-
-		setTitle("LogView4J version: " + version + " listening on port: " + port);
+		String title;
+		title = getFrameTitle(isOnline);
+		setTitle(title);
 
 		ImageIcon icon = ImageManager.getInstance().getImage("images/logview4j.gif");
 
@@ -91,9 +91,29 @@ public class LogView4JFrame extends JFrame {
 		mainPanel.add(splitPanel, BorderLayout.CENTER);
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 
-		createMenu();
+		createMenu(isOnline);
 
-		registerListeners();
+		if (isOnline) {
+			registerListeners();
+		}
+	}
+
+	/**
+	 * Generates a frame title
+	 * @param isOnline Flag if the processing of log is via socket
+	 * @return The frame title
+	 */
+	private String getFrameTitle(boolean isOnline) {
+		StringBuilder buffer = new StringBuilder();
+		buffer.append("LogView4J version: ");
+		buffer.append(version);
+		if (isOnline) {
+			buffer.append(" listening on port: ");
+			buffer.append(port);
+		} else {
+			buffer.append(" offline mode");
+		}
+		return buffer.toString();
 	}
 
 	/**
@@ -145,12 +165,15 @@ public class LogView4JFrame extends JFrame {
 	/**
 	 * Creates the application menu
 	 */
-	protected void createMenu() {
+	protected void createMenu(boolean isOnline) {
 		menuBar.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.BOTH);
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 
 		fileMenu.add(new ExitAction());
+		if (!isOnline) {
+			fileMenu.add(new LoadLogFileAction());
+		}
 		helpMenu.add(new AboutAction());
 		setJMenuBar(menuBar);
 	}

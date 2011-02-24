@@ -34,13 +34,27 @@ public class LogView4J {
 
 	private static Frame rootFrame = null;
 
-	public static void main(String[] args) throws LogView4JException {
-		setLookAndFeel();
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		final boolean isOnline;
+		/* Default is online if parameters are unknown */
+		isOnline = !((args.length == 1) && (args[0].equals("offline")));
+		java.awt.EventQueue.invokeLater(new Runnable() {
 
-		LogView4JFrame frame = new LogView4JFrame();
-		rootFrame = frame;
-		frame.setLocationRelativeTo(null);
-		frame.show();
+			public void run() {
+				try {
+					setLookAndFeel();
+					LogView4JFrame frame = new LogView4JFrame(isOnline);
+					rootFrame = frame;
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (LogView4JException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public static Frame getRootFrame() {
