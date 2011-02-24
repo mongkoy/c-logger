@@ -54,24 +54,27 @@ import ca.odell.glazedlists.swing.EventTableModel;
 public class LogTable extends JTable implements LogView4JEventListener, MouseListener {
 
 	private static LogTable INSTANCE;
-	protected static final String[] propertyNames = new String[]{"icon", "stackTracePresent", "levelString",
-		"combinedTimeStamp", "category", "message"};
-	protected static final String[] columnLabels = new String[]{" ", " ", "Level", "When", "Source", "Message"};
+	protected static final String[] propertyNames = new String[]{"icon",
+		"levelString", "combinedTimeStamp", "category", "message"};
+	protected static final String[] columnLabels = new String[]{" ", "Level",
+		"When", "Source", "Message"};
 	protected static final int[] caseInsensitiveColumns = new int[]{2, 4, 5};
 	protected static final int[] sortingColumns = new int[]{2, 3, 4, 5};
 	private int maxEvents = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENTS, 10000);
 	protected final EventList logEvents = new BasicEventList();
-	protected final LoggingLevelMatcherEditor levelMatcherEditor = new LoggingLevelMatcherEditor();
+	protected final LoggingLevelMatcherEditor levelMatcherEditor =
+			new LoggingLevelMatcherEditor();
 	protected final FilterList filteredEvents;
 	protected final QuickFilterMatcherEditor quickFilterMatcherEditor;
 	protected final EventTableModel eventTableModel;
 	protected final BasicEventList listOfMatchers = new BasicEventList();
-	protected final CompositeMatcherEditor compositeMatcher = new CompositeMatcherEditor(listOfMatchers);
+	protected final CompositeMatcherEditor compositeMatcher =
+			new CompositeMatcherEditor(listOfMatchers);
 	protected final SortedList sortedEvents;
 	protected final LogTableComparatorChooser tableComparorChooser;
 	protected final LogTableCellRenderer renderer = new LogTableCellRenderer();
-	protected final LogTableFormat tableFormat = new LogTableFormat(LogView4JLoggingEvent.class, propertyNames,
-			columnLabels, caseInsensitiveColumns);
+	protected final LogTableFormat tableFormat = new LogTableFormat(LogView4JLoggingEvent.class, propertyNames, columnLabels,
+			caseInsensitiveColumns);
 	public static Color selectedBackgroundColor = null;
 
 	public static LogTable getInstance() {
@@ -116,14 +119,12 @@ public class LogTable extends JTable implements LogView4JEventListener, MouseLis
 
 		getColumnModel().getColumn(0).setMaxWidth(20);
 		getColumnModel().getColumn(0).setMinWidth(20);
-		getColumnModel().getColumn(1).setMaxWidth(20);
-		getColumnModel().getColumn(1).setMinWidth(20);
-		getColumnModel().getColumn(2).setPreferredWidth(50);
-		getColumnModel().getColumn(2).setMaxWidth(50);
-		getColumnModel().getColumn(3).setPreferredWidth(150);
-		getColumnModel().getColumn(3).setMaxWidth(150);
-		getColumnModel().getColumn(4).setPreferredWidth(200);
-		getColumnModel().getColumn(5).setPreferredWidth(300);
+		getColumnModel().getColumn(1).setPreferredWidth(50);
+		getColumnModel().getColumn(1).setMaxWidth(50);
+		getColumnModel().getColumn(2).setPreferredWidth(150);
+		getColumnModel().getColumn(2).setMaxWidth(150);
+		getColumnModel().getColumn(3).setPreferredWidth(200);
+		getColumnModel().getColumn(4).setPreferredWidth(300);
 
 		setShowVerticalLines(false);
 

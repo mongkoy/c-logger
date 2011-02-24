@@ -77,9 +77,7 @@ public class LogView4JLoggingEvent {
 	/**
 	 * Timestamp display format
 	 */
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat
-		(ConfigurationManager.getInstance().getString
-		(ConfigurationKey.TIMESTAMP_DISPLAY_FORMAT));
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(ConfigurationManager.getInstance().getString(ConfigurationKey.TIMESTAMP_DISPLAY_FORMAT));
 	/**
 	 * All final as these are immutable
 	 */
@@ -180,20 +178,12 @@ public class LogView4JLoggingEvent {
 		return category;
 	}
 
-	public String getFullyQualifiedClassName() {
-		return null;
-	}
-
 	public int getLevel() {
 		return level;
 	}
 
 	public String getMessage() {
 		return message;
-	}
-
-	public String[] getStackTrace() {
-		return null;
 	}
 
 	public long getWhen() {
