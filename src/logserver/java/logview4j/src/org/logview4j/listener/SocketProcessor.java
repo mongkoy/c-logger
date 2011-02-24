@@ -44,7 +44,7 @@ public class SocketProcessor extends DataProcessor {
 	public void run() {
 		if (socket != null) {
 			try {
-				readData(socket.getInputStream());
+				readData(socket.getInputStream(), true);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}

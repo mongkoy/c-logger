@@ -21,7 +21,7 @@ public class FileProcessor extends DataProcessor {
 		FileInputStream fileInputStream = null;
 		try {
 			fileInputStream = new FileInputStream(file);
-			readData(fileInputStream);
+			readData(fileInputStream, false);
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 		}
