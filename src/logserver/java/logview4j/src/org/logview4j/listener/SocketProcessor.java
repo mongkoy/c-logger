@@ -19,20 +19,15 @@ package org.logview4j.listener;
 
 import java.io.*;
 import java.net.*;
-import org.liblogger.LoggingEvent;
-import org.liblogger.LoggingEventException;
-
-import org.logview4j.dto.*;
 
 /**
  * A socket processor processes socket connections
  * and reads off logging events from them, dispatching
  * the logging event to the LogReceiver
  */
-public class SocketProcessor implements Runnable {
+public class SocketProcessor extends DataProcessor {
 
-	protected Socket socket = null;
-	protected final InboundEventQueue eventQueue = InboundEventQueue.getInstance();
+	protected Socket socket;
 
 	/**
 	 * Creates a new socket processor with a socket conenction
@@ -47,82 +42,17 @@ public class SocketProcessor implements Runnable {
 	 * Reads a logging event from the socket
 	 */
 	public void run() {
-		readData();
-	}
-
-	/**
-	 * Reads the data from the socket
-	 */
-	protected void readData() {
-		BufferedReader bufferedReader = null;
-		InputStreamReader inputStreamReader = null;
-
-		try {
-			inputStreamReader = new InputStreamReader(socket.getInputStream());
-			bufferedReader = new BufferedReader(inputStreamReader);
-
-			String log;
-			LoggingEvent loggingEvent;
-			LogView4JLoggingEvent logView4JLoggingEvent;
-			while((log = bufferedReader.readLine()) != null) {
-				try {
-					loggingEvent = LoggingEvent.valueOf(log);
-					logView4JLoggingEvent = new LogView4JLoggingEvent(loggingEvent);
-					loggingEvent = null;
-					fireEvent(logView4JLoggingEvent);
-				} catch (LoggingEventException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		/**
-		 * Try to close the readers and socket
-		 */
-		if(bufferedReader != null) {
-			try {
-				bufferedReader.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		if(inputStreamReader != null) {
-			try {
-				inputStreamReader.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		closeSocket();
-
-		/**
-		 * Null out the readers and the socket
-		 */
-		bufferedReader = null;
-		inputStreamReader = null;
-		socket = null;
-	}
-
-	/**
-	 * Closes the client socket
-	 */
-	protected void closeSocket() {
 		if (socket != null) {
 			try {
+				readData(socket.getInputStream());
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			try {
 				socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * Fires the event
-	 * @param loggingEvent the event to fire
-	 */
-	protected void fireEvent(LogView4JLoggingEvent loggingEvent) {
-		eventQueue.put(loggingEvent);
 	}
 }

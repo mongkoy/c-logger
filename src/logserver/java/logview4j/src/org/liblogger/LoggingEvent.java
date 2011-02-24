@@ -31,7 +31,6 @@ public class LoggingEvent {
 		this.message = message;
 	}
 
-
 	/**
 	 * Get the value of timestamp
 	 *
@@ -49,7 +48,6 @@ public class LoggingEvent {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
-
 
 	/**
 	 * Get the value of loggerName
@@ -100,22 +98,22 @@ public class LoggingEvent {
 
 		startTagIndex = log.indexOf('[');
 		/* The first character must be [ */
-		if(startTagIndex != 0) {
+		if (startTagIndex != 0) {
 			throw new LoggingEventException("Log level is unknown.");
 		}
 		endTagIndex = log.indexOf(']', (startTagIndex + 1));
-		if(endTagIndex < 0) {
+		if (endTagIndex < 0) {
 			throw new LoggingEventException("Log level is unknown.");
 		}
 		subString = log.substring((startTagIndex + 1), endTagIndex);
 		loggingEvent.setLevel(Level.toLevel(subString));
 
 		startTagIndex = log.indexOf('[', (endTagIndex + 1));
-		if(startTagIndex != (endTagIndex + 1)) {
+		if (startTagIndex != (endTagIndex + 1)) {
 			throw new LoggingEventException("Log timestamp is unknown.");
 		}
 		endTagIndex = log.indexOf(']', (startTagIndex + 1));
-		if(endTagIndex < 0) {
+		if (endTagIndex < 0) {
 			throw new LoggingEventException("Log timestamp is unknown.");
 		}
 		subString = log.substring((startTagIndex + 1), endTagIndex);
@@ -126,11 +124,11 @@ public class LoggingEvent {
 		}
 
 		startTagIndex = log.indexOf('[', (endTagIndex + 1));
-		if(startTagIndex != (endTagIndex + 1)) {
+		if (startTagIndex != (endTagIndex + 1)) {
 			throw new LoggingEventException("Logger name is unknown.");
 		}
 		endTagIndex = log.indexOf(']', (startTagIndex + 1));
-		if(endTagIndex < 0) {
+		if (endTagIndex < 0) {
 			throw new LoggingEventException("Logger name is unknown.");
 		}
 		subString = log.substring((startTagIndex + 1), endTagIndex);
