@@ -30,26 +30,26 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
  * A transparent JToolBar that has no border  
  */
 public class MinimalJToolBar extends JToolBar {
-  public MinimalJToolBar() {
 
-  }
-  
-  /**
-   * Initialize the toolbar
-   */
-  protected void init() {
-    setOpaque(false);
-    setBorder(BorderFactory.createEmptyBorder());
-    setFloatable(false);
-    setMargin(new Insets(0, 0, 0, 0));
-    putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-    putClientProperty(PlasticLookAndFeel.IS_3D_KEY, Boolean.FALSE);
-  }
-  
-  protected void addDividerButton() {
-    JLabel divider = new JLabel(ImageManager.getInstance().getImage("images/divider.gif"));
-    divider.setPreferredSize(new Dimension(4, 18));
-    divider.setBorder(BorderFactory.createEmptyBorder());
-    add(divider);
-  }
+	public MinimalJToolBar() {
+	}
+
+	/**
+	 * Initialize the toolbar
+	 */
+	protected void init() {
+		setOpaque(false);
+		setBorder(BorderFactory.createEmptyBorder());
+		setFloatable(false);
+		setMargin(new Insets(0, 0, 0, 0));
+		putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+		putClientProperty(PlasticLookAndFeel.IS_3D_KEY, Boolean.FALSE);
+	}
+
+	protected void addDividerButton() {
+		JLabel divider = new JLabel(ImageManager.getInstance().getImage("images/divider.gif"));
+		divider.setPreferredSize(new Dimension(4, 18));
+		divider.setBorder(BorderFactory.createEmptyBorder());
+		add(divider);
+	}
 }

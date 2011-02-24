@@ -15,7 +15,6 @@
  * 
  * $Id: LogTablePopupMenu.java,v 1.2 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.ui.popup;
 
 import java.awt.*;
@@ -29,20 +28,18 @@ import org.logview4j.ui.action.*;
  */
 public class LogTablePopupMenu extends JPopupMenu {
 
-  
-  public LogTablePopupMenu() {
-    init();
-  }
-  
-  private void init() {
-    
-  }
-  
-  public void showMenu(Component parent, int x, int y) {
-    removeAll();
-    
-    add(new JMenuItem(new DeleteAboveAction()));
-    add(new JMenuItem(new DeleteBelowAction()));
-    show(parent, x, y);
-  }
+	public LogTablePopupMenu() {
+		init();
+	}
+
+	private void init() {
+	}
+
+	public void showMenu(Component parent, int x, int y) {
+		removeAll();
+
+		add(new JMenuItem(new DeleteAboveAction()));
+		add(new JMenuItem(new DeleteBelowAction()));
+		show(parent, x, y);
+	}
 }

@@ -15,7 +15,6 @@
  * 
  * $Id: QuickFilterMatcher.java,v 1.1 2005/10/03 10:11:27 jpassenger Exp $
  */
-
 package org.logview4j.ui.matcher;
 
 import ca.odell.glazedlists.TextFilterator;
@@ -23,13 +22,12 @@ import ca.odell.glazedlists.impl.filter.TextMatcher;
 
 public class QuickFilterMatcher extends TextMatcher {
 
-  /**
-   * Creates a new QuickFilterMatcher 
-   * @param filterValues the filter values
-   * @param filterator the filterator
-   */
-  public QuickFilterMatcher(String[] filterValues, TextFilterator filterator) {
-    super(filterValues, filterator);
-  }
-
+	/**
+	 * Creates a new QuickFilterMatcher
+	 * @param filterValues the filter values
+	 * @param filterator the filterator
+	 */
+	public QuickFilterMatcher(String[] filterValues, TextFilterator filterator) {
+		super(filterValues, filterator);
+	}
 }

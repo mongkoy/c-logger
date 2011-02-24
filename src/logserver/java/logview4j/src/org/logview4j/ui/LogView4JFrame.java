@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4JFrame.java,v 1.15 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.ui;
 
 import java.awt.*;
@@ -41,100 +40,93 @@ import com.jgoodies.looks.*;
  */
 public class LogView4JFrame extends JFrame {
 
-  protected HeaderPanel logTableHeaderPanel = null;
-  protected HeaderPanel logDetailHeaderPanel = null;
-  protected JPanel mainPanel = new JPanel(new BorderLayout());
-  protected MinimalJSplitPane leftSplitPanel = null;
-  protected JSplitPane splitPanel = null;
-  protected JScrollPane logTableScrollPane = new JScrollPane(new LogTable());
-  protected DetailsPanel detailsPanel = new DetailsPanel();
-  protected DetailsPanelToolBar detailsPanelToolBar = new DetailsPanelToolBar();
-  
-  protected LogTableToolBar logTableToolBar = new LogTableToolBar();
-  
-  protected SocketListener socketListener = null;
-  
-  protected final String version = ConfigurationManager.getInstance().getString(ConfigurationKey.VERSION);
-  protected final int port = ConfigurationManager.getInstance().getInt(ConfigurationKey.LISTEN_PORT, -1);
-  
-  /**
-   * Menus
-   */
-  protected JMenuBar menuBar = new JMenuBar();
-  protected JMenu fileMenu = new JMenu("File");
-  protected JMenu helpMenu = new JMenu("Help");
-  
-  public LogView4JFrame() throws LogView4JException {
-    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-    init();
-  }
+	protected HeaderPanel logTableHeaderPanel = null;
+	protected HeaderPanel logDetailHeaderPanel = null;
+	protected JPanel mainPanel = new JPanel(new BorderLayout());
+	protected MinimalJSplitPane leftSplitPanel = null;
+	protected JSplitPane splitPanel = null;
+	protected JScrollPane logTableScrollPane = new JScrollPane(new LogTable());
+	protected DetailsPanel detailsPanel = new DetailsPanel();
+	protected DetailsPanelToolBar detailsPanelToolBar = new DetailsPanelToolBar();
+	protected LogTableToolBar logTableToolBar = new LogTableToolBar();
+	protected SocketListener socketListener = null;
+	protected final String version = ConfigurationManager.getInstance().getString(ConfigurationKey.VERSION);
+	protected final int port = ConfigurationManager.getInstance().getInt(ConfigurationKey.LISTEN_PORT, -1);
+	/**
+	 * Menus
+	 */
+	protected JMenuBar menuBar = new JMenuBar();
+	protected JMenu fileMenu = new JMenu("File");
+	protected JMenu helpMenu = new JMenu("Help");
+
+	public LogView4JFrame() throws LogView4JException {
+		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+		init();
+	}
+
+	protected void init() throws LogView4JException {
+		setSize(new Dimension(1024, 768));
 
 
-  protected void init() throws LogView4JException {
-    setSize(new Dimension(1024, 768));
-    
 
-    
-    setTitle("LogView4J version: " + version + " listening on port: " + port);
-  
-    ImageIcon icon = ImageManager.getInstance().getImage("images/logview4j.gif");
-    
-    if (icon != null) {
-      setIconImage(icon.getImage());
-    }
-    
-    logTableScrollPane.setBorder(BorderFactory.createEmptyBorder());
-    
-    logDetailHeaderPanel = new HeaderPanel(detailsPanel, detailsPanelToolBar);
-    logTableHeaderPanel = new HeaderPanel(logTableScrollPane, logTableToolBar);
-    
-    logTableHeaderPanel.setText("Events");
-    logDetailHeaderPanel.setText("Event details");
-    
-    splitPanel = MinimalJSplitPane.createCleanSplitPane(JSplitPane.VERTICAL_SPLIT, logTableHeaderPanel, logDetailHeaderPanel);
-    splitPanel.setDividerLocation(400);
-    splitPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 3, 3));
-    mainPanel.add(splitPanel, BorderLayout.CENTER);
-    getContentPane().add(mainPanel, BorderLayout.CENTER);    
+		setTitle("LogView4J version: " + version + " listening on port: " + port);
 
-    createMenu();
-  
-    registerListeners();
-  }
+		ImageIcon icon = ImageManager.getInstance().getImage("images/logview4j.gif");
 
+		if (icon != null) {
+			setIconImage(icon.getImage());
+		}
 
-  /**
-   * Register event listeners
-   * @throws LogView4JException
-   */
-  private void registerListeners() throws LogView4JException {
-   
-    try {
-      socketListener = new SocketListener(port);
-    } 
-    catch (LogView4JException e) {
-      e.printStackTrace();
-      errorMessage("LogView4J failed to listen on socket: " + port + " caused by:\n" + e.toString());
-      exit();
-    }
-    
-    Thread t = new Thread(socketListener);
-    t.setPriority(Thread.NORM_PRIORITY - 1);
-    t.start();
-  }
-  
+		logTableScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+		logDetailHeaderPanel = new HeaderPanel(detailsPanel, detailsPanelToolBar);
+		logTableHeaderPanel = new HeaderPanel(logTableScrollPane, logTableToolBar);
+
+		logTableHeaderPanel.setText("Events");
+		logDetailHeaderPanel.setText("Event details");
+
+		splitPanel = MinimalJSplitPane.createCleanSplitPane(JSplitPane.VERTICAL_SPLIT, logTableHeaderPanel, logDetailHeaderPanel);
+		splitPanel.setDividerLocation(400);
+		splitPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 3, 3));
+		mainPanel.add(splitPanel, BorderLayout.CENTER);
+		getContentPane().add(mainPanel, BorderLayout.CENTER);
+
+		createMenu();
+
+		registerListeners();
+	}
+
+	/**
+	 * Register event listeners
+	 * @throws LogView4JException
+	 */
+	private void registerListeners() throws LogView4JException {
+
+		try {
+			socketListener = new SocketListener(port);
+		} catch (LogView4JException e) {
+			e.printStackTrace();
+			errorMessage("LogView4J failed to listen on socket: " + port + " caused by:\n" + e.toString());
+			exit();
+		}
+
+		Thread t = new Thread(socketListener);
+		t.setPriority(Thread.NORM_PRIORITY - 1);
+		t.start();
+	}
+
 	/**
 	 * Shows an error message
-   * @param message the error message to show
-   */
-  public void errorMessage(String message) {
-    JOptionPane.showMessageDialog(this, message, "LogView4J Error", JOptionPane.ERROR_MESSAGE);
-  }
+	 * @param message the error message to show
+	 */
+	public void errorMessage(String message) {
+		JOptionPane.showMessageDialog(this, message, "LogView4J Error", JOptionPane.ERROR_MESSAGE);
+	}
 
-  /**
-   * Exits the application
-   */
-  public static void exit() {
+	/**
+	 * Exits the application
+	 */
+	public static void exit() {
 		System.exit(0);
 	}
 
@@ -144,23 +136,22 @@ public class LogView4JFrame extends JFrame {
 	 */
 	protected void processWindowEvent(WindowEvent e) {
 		super.processWindowEvent(e);
-		
+
 		if (e.getID() == WindowEvent.WINDOW_CLOSING) {
 			exit();
 		}
 	}
-	
+
 	/**
 	 * Creates the application menu
 	 */
 	protected void createMenu() {
-	  menuBar.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.BOTH);
-	  menuBar.add(fileMenu);
-	  menuBar.add(helpMenu);
-	  
-	  fileMenu.add(new ExitAction());
-	  helpMenu.add(new AboutAction());
-	  setJMenuBar(menuBar);
+		menuBar.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.BOTH);
+		menuBar.add(fileMenu);
+		menuBar.add(helpMenu);
+
+		fileMenu.add(new ExitAction());
+		helpMenu.add(new AboutAction());
+		setJMenuBar(menuBar);
 	}
-	
 }

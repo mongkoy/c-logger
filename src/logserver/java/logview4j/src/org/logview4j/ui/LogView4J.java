@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4J.java,v 1.7 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.ui;
 
 import java.awt.*;
@@ -33,30 +32,29 @@ import com.jgoodies.looks.plastic.theme.Silver;
  */
 public class LogView4J {
 
-  private static Frame rootFrame = null;
-  
-  public static void main(String[] args) throws LogView4JException {
-    setLookAndFeel();
-    
-    LogView4JFrame frame = new LogView4JFrame();
-    rootFrame = frame;
-    frame.setLocationRelativeTo(null);
-    frame.show();
-  }
+	private static Frame rootFrame = null;
 
-  public static Frame getRootFrame() {
-    return rootFrame;
-  }
-  
-  /**
-   * Sets the look and feel for the application
-   */
-  private static void setLookAndFeel() {
-    PlasticLookAndFeel.setMyCurrentTheme(new Silver());
-    try {
-      UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-    } 
-    catch (Exception e) {
-    }
-  }
+	public static void main(String[] args) throws LogView4JException {
+		setLookAndFeel();
+
+		LogView4JFrame frame = new LogView4JFrame();
+		rootFrame = frame;
+		frame.setLocationRelativeTo(null);
+		frame.show();
+	}
+
+	public static Frame getRootFrame() {
+		return rootFrame;
+	}
+
+	/**
+	 * Sets the look and feel for the application
+	 */
+	private static void setLookAndFeel() {
+		PlasticLookAndFeel.setMyCurrentTheme(new Silver());
+		try {
+			UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+		} catch (Exception e) {
+		}
+	}
 }

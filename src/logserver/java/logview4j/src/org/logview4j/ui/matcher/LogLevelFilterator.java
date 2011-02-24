@@ -15,7 +15,6 @@
  * 
  * $Id: LogLevelFilterator.java,v 1.1 2005/10/03 10:11:27 jpassenger Exp $
  */
-
 package org.logview4j.ui.matcher;
 
 import java.util.List;
@@ -25,8 +24,8 @@ import org.logview4j.dto.LogView4JLoggingEvent;
 import ca.odell.glazedlists.TextFilterator;
 
 public class LogLevelFilterator implements TextFilterator {
-  
-  public void getFilterStrings(List values, Object logEvent) {
-    ((LogView4JLoggingEvent) logEvent).harvestQuickFilterItems(values);
-  }
+
+	public void getFilterStrings(List values, Object logEvent) {
+		((LogView4JLoggingEvent) logEvent).harvestQuickFilterItems(values);
+	}
 }

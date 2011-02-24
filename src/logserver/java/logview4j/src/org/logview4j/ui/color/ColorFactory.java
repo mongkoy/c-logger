@@ -15,34 +15,31 @@
  * 
  * $Id: ColorFactory.java,v 1.5 2005/10/03 10:17:50 jpassenger Exp $
  */
-
 package org.logview4j.ui.color;
 
 import java.awt.Color;
 
 import javax.swing.UIManager;
 
-
 /**
  * A factory for storing colors for the user interface
  */
 public class ColorFactory {
 
-  /**
-   * Fetches the gradient header background color
-   * @return the color of the gradient header background
-   */
-  public static Color getGradientBackground() {
-    Color c = UIManager.getColor("SimpleInternalFrame.activeTitleBackground");
-    return c;
-  }
-  
-  /**
-   * Fetch the background color for the gradients in LogView4J
-   * @return the background color for the gradients in LogView4J
-   */
-  public static Color getGradientTextForeground() {
-    return Color.WHITE;
-  }
+	/**
+	 * Fetches the gradient header background color
+	 * @return the color of the gradient header background
+	 */
+	public static Color getGradientBackground() {
+		Color c = UIManager.getColor("SimpleInternalFrame.activeTitleBackground");
+		return c;
+	}
 
+	/**
+	 * Fetch the background color for the gradients in LogView4J
+	 * @return the background color for the gradients in LogView4J
+	 */
+	public static Color getGradientTextForeground() {
+		return Color.WHITE;
+	}
 }

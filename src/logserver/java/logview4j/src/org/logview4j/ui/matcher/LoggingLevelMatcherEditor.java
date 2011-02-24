@@ -15,7 +15,6 @@
  * 
  * $Id: LoggingLevelMatcherEditor.java,v 1.2 2005/10/03 10:17:50 jpassenger Exp $
  */
-
 package org.logview4j.ui.matcher;
 
 import org.logview4j.event.LogView4JEvent;
@@ -31,42 +30,42 @@ import ca.odell.glazedlists.matchers.AbstractMatcherEditor;
  * selected log level filter
  */
 public class LoggingLevelMatcherEditor extends AbstractMatcherEditor implements LogView4JEventListener {
-  
-  /**
-   * Creates a new log level matcher editor and registers it with
-   * the event manager
-   */
-  public LoggingLevelMatcherEditor() {
-    LogView4JEventManager.getInstance().register(this);
-  }
-  
-  /**
-   * Fired when a requested event is received
-   * @param event the event that was fired
-   */
-  public void eventReceived(LogView4JEvent event) {
-    switch(event.getEventId().getId()) {
-      case LogView4JEventId.LOGGING_LEVEL_FILTER_CHANGED_ID: {
-        filterLevelChanged((Integer) event.get(LogView4JEventKey.LEVEL_FILTER_FLAGS));
-      }
-    }
-  }
 
-  /**
-   * Fired when the level filter has changed and tells the table to refilter
-   * @param flags the new level filter flags
-   */
-  protected void filterLevelChanged(Integer flags) {
-    this.fireChanged(new LoggingLevelMatcher(flags.intValue()));
-  }
+	/**
+	 * Creates a new log level matcher editor and registers it with
+	 * the event manager
+	 */
+	public LoggingLevelMatcherEditor() {
+		LogView4JEventManager.getInstance().register(this);
+	}
 
-  /**
-   * Tell the event manager what events to listen for
-   * @return the events to listen for
-   */
-  public LogView4JEventId[] getEventsOfInterest() {
-    return new LogView4JEventId[] {
-        LogView4JEventId.LOGGING_LEVEL_FILTER_CHANGED
-    };
-  }
+	/**
+	 * Fired when a requested event is received
+	 * @param event the event that was fired
+	 */
+	public void eventReceived(LogView4JEvent event) {
+		switch (event.getEventId().getId()) {
+			case LogView4JEventId.LOGGING_LEVEL_FILTER_CHANGED_ID: {
+				filterLevelChanged((Integer) event.get(LogView4JEventKey.LEVEL_FILTER_FLAGS));
+			}
+		}
+	}
+
+	/**
+	 * Fired when the level filter has changed and tells the table to refilter
+	 * @param flags the new level filter flags
+	 */
+	protected void filterLevelChanged(Integer flags) {
+		this.fireChanged(new LoggingLevelMatcher(flags.intValue()));
+	}
+
+	/**
+	 * Tell the event manager what events to listen for
+	 * @return the events to listen for
+	 */
+	public LogView4JEventId[] getEventsOfInterest() {
+		return new LogView4JEventId[]{
+					LogView4JEventId.LOGGING_LEVEL_FILTER_CHANGED
+				};
+	}
 }

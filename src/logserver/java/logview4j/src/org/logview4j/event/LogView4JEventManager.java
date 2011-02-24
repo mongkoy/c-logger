@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4JEventManager.java,v 1.4 2005/10/03 10:11:26 jpassenger Exp $
  */
-
 package org.logview4j.event;
 
 import java.util.ArrayList;
@@ -31,137 +30,134 @@ import javax.swing.SwingUtilities;
  */
 public class LogView4JEventManager {
 
-  /**
-   * A map of listeners
-   */
-  private Map listeners = new HashMap();
-  
-  /**
-   * Singleton instance
-   */
-  private static LogView4JEventManager instance = new LogView4JEventManager();
-  
-  /**
-   * Private constructor to support singleton
-   */
-  private LogView4JEventManager() {
-    
-  }
-  
-  /**
-   * Singleton getter
-   * @return the singleton instance
-   */
-  public static LogView4JEventManager getInstance() {
-    return instance;
-  }
-  
-  /**
-   * Removes all listeners
-   */
-  public void clearAllListeners() {
-    listeners.clear();
-  }
-  
-  /**
-   * Registers an event listener to its events of interest
-   * @param listener the event listener to register
-   */
-  public void register(LogView4JEventListener listener) {
-    LogView4JEventId [] events = listener.getEventsOfInterest();
-    
-    if (events == null) {
-      return;
-    }
-    
-    for (int i = 0; i < events.length; i++) {
-      List list = getListeners(events[i]);
-      list.add(listener);
-    }
-  }
-  
-  /**
-   * Fires an event to the registered listeners, checking to see if the
-   * current thread is the AWT event dispatcher thread and if not creates
-   * a new Runnable and uses SwingUtilities.invokeLater()
-   * @param event the event to fire
-   */
-  public void fireEvent(LogView4JEvent event) {
-  
-    /**
-     * Don't bother checking calling thread for these events
-     */
-    if (event.contains(LogView4JEventKey.JUST_FIRE_EVENT)) {
-      fireEventOnAWTThread(event);
-      return;
-    }
-    
-    if (SwingUtilities.isEventDispatchThread()) {
-      fireEventOnAWTThread(event);
-    }
-    else {
-      LogView4JEventDispatcher dispatcher = new LogView4JEventDispatcher(event);
-      SwingUtilities.invokeLater(dispatcher);
-    }
-  }
-  
-  /**
-   * Fires the event on the AWT event dispatcher thread.  This method
-   * id private and can only be accessed by calling fireEvent() which 
-   * checks to see if the current thread is the AWT event dispatcher 
-   * thread and if not uses SwingUtilities.invokeLater() to get here.
-   * @param event the event to dispatch
-   */
-  protected void fireEventOnAWTThread(LogView4JEvent event) {
-    List listenersList = getListeners(event.getEventId());
-    
-    for (int i = 0; i < listenersList.size(); i++) {
-      LogView4JEventListener listener = (LogView4JEventListener) listenersList.get(i);
-      listener.eventReceived(event);
-    } 
-  }
+	/**
+	 * A map of listeners
+	 */
+	private Map listeners = new HashMap();
+	/**
+	 * Singleton instance
+	 */
+	private static LogView4JEventManager instance = new LogView4JEventManager();
 
-  /**
-   * Get the listeners for the requested event id
-   * @param id the id to fetch listeners for
-   * @return the list of listeners
-   */
-  private List getListeners(LogView4JEventId id) {
-    if (listeners.containsKey(id)) {
-      return (List) listeners.get(id);
-    }
-    
-    List listenerList = new ArrayList();
-    
-    listeners.put(id, listenerList);
-    
-    return listenerList;
-  }
-  
-  /**
-   * An inner class that facilitates dispatching 
-   * the event on the AWT thread
-   */
-  class LogView4JEventDispatcher implements Runnable {
+	/**
+	 * Private constructor to support singleton
+	 */
+	private LogView4JEventManager() {
+	}
 
-    /**
-     * The event to dispatch
-     */
-    protected final LogView4JEvent event;
-    
-    /**
-     * Creates the dispatcher witht eh event to dispatch
-     * @param event the event to dispatch
-     */
-    public LogView4JEventDispatcher(LogView4JEvent event) {
-      this.event = event;
-    }
-    
-    /**
-     * Executed by the AWT event dispatcher thread
-     */
-    public void run() {
-      fireEventOnAWTThread(event);
-    }
-  }
+	/**
+	 * Singleton getter
+	 * @return the singleton instance
+	 */
+	public static LogView4JEventManager getInstance() {
+		return instance;
+	}
+
+	/**
+	 * Removes all listeners
+	 */
+	public void clearAllListeners() {
+		listeners.clear();
+	}
+
+	/**
+	 * Registers an event listener to its events of interest
+	 * @param listener the event listener to register
+	 */
+	public void register(LogView4JEventListener listener) {
+		LogView4JEventId[] events = listener.getEventsOfInterest();
+
+		if (events == null) {
+			return;
+		}
+
+		for (int i = 0; i < events.length; i++) {
+			List list = getListeners(events[i]);
+			list.add(listener);
+		}
+	}
+
+	/**
+	 * Fires an event to the registered listeners, checking to see if the
+	 * current thread is the AWT event dispatcher thread and if not creates
+	 * a new Runnable and uses SwingUtilities.invokeLater()
+	 * @param event the event to fire
+	 */
+	public void fireEvent(LogView4JEvent event) {
+
+		/**
+		 * Don't bother checking calling thread for these events
+		 */
+		if (event.contains(LogView4JEventKey.JUST_FIRE_EVENT)) {
+			fireEventOnAWTThread(event);
+			return;
+		}
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			fireEventOnAWTThread(event);
+		} else {
+			LogView4JEventDispatcher dispatcher = new LogView4JEventDispatcher(event);
+			SwingUtilities.invokeLater(dispatcher);
+		}
+	}
+
+	/**
+	 * Fires the event on the AWT event dispatcher thread.  This method
+	 * id private and can only be accessed by calling fireEvent() which
+	 * checks to see if the current thread is the AWT event dispatcher
+	 * thread and if not uses SwingUtilities.invokeLater() to get here.
+	 * @param event the event to dispatch
+	 */
+	protected void fireEventOnAWTThread(LogView4JEvent event) {
+		List listenersList = getListeners(event.getEventId());
+
+		for (int i = 0; i < listenersList.size(); i++) {
+			LogView4JEventListener listener = (LogView4JEventListener) listenersList.get(i);
+			listener.eventReceived(event);
+		}
+	}
+
+	/**
+	 * Get the listeners for the requested event id
+	 * @param id the id to fetch listeners for
+	 * @return the list of listeners
+	 */
+	private List getListeners(LogView4JEventId id) {
+		if (listeners.containsKey(id)) {
+			return (List) listeners.get(id);
+		}
+
+		List listenerList = new ArrayList();
+
+		listeners.put(id, listenerList);
+
+		return listenerList;
+	}
+
+	/**
+	 * An inner class that facilitates dispatching
+	 * the event on the AWT thread
+	 */
+	class LogView4JEventDispatcher implements Runnable {
+
+		/**
+		 * The event to dispatch
+		 */
+		protected final LogView4JEvent event;
+
+		/**
+		 * Creates the dispatcher witht eh event to dispatch
+		 * @param event the event to dispatch
+		 */
+		public LogView4JEventDispatcher(LogView4JEvent event) {
+			this.event = event;
+		}
+
+		/**
+		 * Executed by the AWT event dispatcher thread
+		 */
+		public void run() {
+			fireEventOnAWTThread(event);
+		}
+	}
 }

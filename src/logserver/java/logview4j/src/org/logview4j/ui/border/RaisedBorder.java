@@ -45,7 +45,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-
 package org.logview4j.ui.border;
 
 import java.awt.Component;
@@ -61,19 +60,21 @@ import javax.swing.border.AbstractBorder;
  */
 public class RaisedBorder extends AbstractBorder {
 
-  private static final Insets INSETS = new Insets(2, 7, 1, 1);
+	private static final Insets INSETS = new Insets(2, 7, 1, 1);
 
-  public Insets getBorderInsets(Component c) { return INSETS; }
+	public Insets getBorderInsets(Component c) {
+		return INSETS;
+	}
 
-  public void paintBorder(Component c, Graphics g,
-      int x, int y, int w, int h) {
-          
-      g.translate(x, y);
-      g.setColor(UIManager.getColor("controlLtHighlight"));
-      g.fillRect(0, 0,   w, 1);
-      g.fillRect(0, 1,   1, h-1);
-      g.setColor(UIManager.getColor("controlShadow"));
-      g.fillRect(0, h-1, w, 1);
-      g.translate(-x, -y);
-  }
+	public void paintBorder(Component c, Graphics g,
+			int x, int y, int w, int h) {
+
+		g.translate(x, y);
+		g.setColor(UIManager.getColor("controlLtHighlight"));
+		g.fillRect(0, 0, w, 1);
+		g.fillRect(0, 1, 1, h - 1);
+		g.setColor(UIManager.getColor("controlShadow"));
+		g.fillRect(0, h - 1, w, 1);
+		g.translate(-x, -y);
+	}
 }

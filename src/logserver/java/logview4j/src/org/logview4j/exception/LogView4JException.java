@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4JException.java,v 1.5 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.exception;
 
 /**
@@ -23,29 +22,28 @@ package org.logview4j.exception;
  */
 public class LogView4JException extends Exception {
 
-  /**
-   * Creates a new exception with a message
-   * @param message the message
-   */
-  public LogView4JException(String message) {
-    super(message);
-  }
-  
-  /**
-   * Creates a new exception with a message and a root cause
-   * @param message the message
-   * @param t the root cause
-   */
-  public LogView4JException(String message, Throwable t) {
-    super(message, t);
-  }
-  
-  public String toString() {
-    if (getCause() != null) {
-      return getCause().toString();
-    }
-    else {
-      return super.toString();
-    }
-  }
+	/**
+	 * Creates a new exception with a message
+	 * @param message the message
+	 */
+	public LogView4JException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Creates a new exception with a message and a root cause
+	 * @param message the message
+	 * @param t the root cause
+	 */
+	public LogView4JException(String message, Throwable t) {
+		super(message, t);
+	}
+
+	public String toString() {
+		if (getCause() != null) {
+			return getCause().toString();
+		} else {
+			return super.toString();
+		}
+	}
 }

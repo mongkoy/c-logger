@@ -15,30 +15,26 @@
  * 
  * $Id: MinimalJTabbedPane.java,v 1.2 2005/10/19 12:28:53 jpassenger Exp $
  */
-
 package org.logview4j.ui.tab;
 
 import javax.swing.JTabbedPane;
 
 import com.jgoodies.looks.Options;
 
-
 /**
  * A minimal rendering JTabbedPane
  */
 public class MinimalJTabbedPane extends JTabbedPane {
-  
-  public MinimalJTabbedPane() {
-    super();
-    init();
-  }
 
-  /**
-   * Initializes the tabbed panel 
-   */
-  private void init() {
-    putClientProperty(Options.NO_CONTENT_BORDER_KEY, Boolean.TRUE);
-  }
-  
-  
+	public MinimalJTabbedPane() {
+		super();
+		init();
+	}
+
+	/**
+	 * Initializes the tabbed panel
+	 */
+	private void init() {
+		putClientProperty(Options.NO_CONTENT_BORDER_KEY, Boolean.TRUE);
+	}
 }

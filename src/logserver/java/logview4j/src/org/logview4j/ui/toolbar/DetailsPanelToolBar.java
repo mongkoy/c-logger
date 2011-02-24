@@ -15,7 +15,6 @@
  * 
  * $Id: DetailsPanelToolBar.java,v 1.3 2005/11/05 05:02:49 jpassenger Exp $
  */
-
 package org.logview4j.ui.toolbar;
 
 import java.awt.event.ActionEvent;
@@ -25,41 +24,38 @@ import org.logview4j.event.LogView4JEvent;
 import org.logview4j.event.LogView4JEventId;
 import org.logview4j.event.LogView4JEventManager;
 
-
-
 /**
  * A toolbar for the details panel
  */
 public class DetailsPanelToolBar extends MinimalJToolBar {
-  
-  protected ToolBarButton copyButton = null; 
-  
-  public DetailsPanelToolBar() {
-    init();
-  }
-  
-  
-  /**
-   * Initializes the toolbar buttons 
-   */
-  protected void init() {
-    super.init();
-    copyButton = new ToolBarButton("copy", "Copy event to clipboard", "images/copy.gif");
-    add(copyButton);
-    registerListeners();
-  }
-  
-  private void registerListeners() {
-    copyButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        copy();
-      }
-    });
-  }
-  
-  private void copy() {
-    LogView4JEvent event = new LogView4JEvent(LogView4JEventId.COPY_DETAILS);
-    LogView4JEventManager.getInstance().fireEvent(event);
-  }
-  
+
+	protected ToolBarButton copyButton = null;
+
+	public DetailsPanelToolBar() {
+		init();
+	}
+
+	/**
+	 * Initializes the toolbar buttons
+	 */
+	protected void init() {
+		super.init();
+		copyButton = new ToolBarButton("copy", "Copy event to clipboard", "images/copy.gif");
+		add(copyButton);
+		registerListeners();
+	}
+
+	private void registerListeners() {
+		copyButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				copy();
+			}
+		});
+	}
+
+	private void copy() {
+		LogView4JEvent event = new LogView4JEvent(LogView4JEventId.COPY_DETAILS);
+		LogView4JEventManager.getInstance().fireEvent(event);
+	}
 }

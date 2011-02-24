@@ -15,7 +15,6 @@
  * 
  * $Id: RegexFilterMatcher.java,v 1.1 2006/02/22 02:04:29 jpassenger Exp $
  */
-
 package org.logview4j.ui.matcher;
 
 import java.util.ArrayList;
@@ -26,24 +25,22 @@ import java.util.regex.Pattern;
 import ca.odell.glazedlists.TextFilterator;
 import ca.odell.glazedlists.matchers.Matcher;
 
-public class RegexFilterMatcher implements Matcher  {
+public class RegexFilterMatcher implements Matcher {
+
 	private TextFilterator filtrator;
 	private Pattern pattern;
-	
-	
+
 	public RegexFilterMatcher(Pattern pattern, TextFilterator filtrator) {
 		super();
 		this.pattern = pattern;
 		this.filtrator = filtrator;
 	}
 
-
-
 	public boolean matches(Object objectToMatch) {
 		boolean matches = false;
 		List strings = new ArrayList();
 		filtrator.getFilterStrings(strings, objectToMatch);
-		
+
 		for (Iterator iter = strings.iterator(); !matches && iter.hasNext();) {
 			String s = (String) iter.next();
 			java.util.regex.Matcher m = pattern.matcher(s);
@@ -51,5 +48,4 @@ public class RegexFilterMatcher implements Matcher  {
 		}
 		return matches;
 	}
-
 }

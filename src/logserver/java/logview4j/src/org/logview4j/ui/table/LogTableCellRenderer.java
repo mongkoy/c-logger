@@ -15,7 +15,6 @@
  * 
  * $Id: LogTableCellRenderer.java,v 1.8 2006/02/22 02:21:30 jpassenger Exp $
  */
-
 package org.logview4j.ui.table;
 
 import java.awt.Color;
@@ -29,83 +28,74 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-
 /**
  * A cell renderer for the log table
  */
 public class LogTableCellRenderer extends JLabel implements TableCellRenderer {
-    
-    private final Date formatter = new Date();
-    
-    /**
-     * TODO make this configurable
-     */
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    
-    /**
-     * Orange marker color
-     * TODO make this configurable
-     */
-    private static final Color MARKER_COLOR = new Color(222, 127, 0);
-    private static final Color MARKER_COLOR_BRIGHTER = new Color(222, 127, 0).brighter();
-    
-    public LogTableCellRenderer() {
-        setOpaque(true);
-        setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-    }
-    
-    /**
-     * Renders a cell in the table
-     * @param table the table to render into
-     * @param value teh value to render
-     * @param isSelected true if cell is selected
-     * @param hasFocus true if the cell has focus
-     * @param row the row id
-     * @param column the column id
-     * @return the component to render, in this case, this
-     */
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        
-        boolean isMarked = false;
-        try{
-            isMarked = ((LogTable) table).getLogEvent(row).isMarked();
-        }catch (NullPointerException e){
-            System.out.println("table = " + table);
-            
-        }
-        
-        if (isMarked && isSelected) {
-            setForeground(MARKER_COLOR_BRIGHTER);
-            setBackground(table.getSelectionBackground());
-        }
-        else if (isSelected) {
-            setForeground(table.getSelectionForeground());
-            setBackground(table.getSelectionBackground());
-        }
-        else if (isMarked) {
-            setForeground(table.getSelectionForeground());
-            setBackground(MARKER_COLOR);
-        }
-        else {
-            setForeground(table.getForeground());
-            setBackground(table.getBackground());
-        }
-        
-        if (value instanceof String) {
-            setText(value.toString());
-        }
-        else if (value instanceof Long) {
-            formatter.setTime(((LogTable) table).getLogEvent(row).getWhen());
-            setText(DATE_FORMAT.format(formatter));
-        }
-        else if (value instanceof ImageIcon) {
-            setIcon((ImageIcon) value);
-        }
-        else {
-            setIcon(null);
-            setText(null);
-        }
-        
-        return this;
-    }
+
+	private final Date formatter = new Date();
+	/**
+	 * TODO make this configurable
+	 */
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	/**
+	 * Orange marker color
+	 * TODO make this configurable
+	 */
+	private static final Color MARKER_COLOR = new Color(222, 127, 0);
+	private static final Color MARKER_COLOR_BRIGHTER = new Color(222, 127, 0).brighter();
+
+	public LogTableCellRenderer() {
+		setOpaque(true);
+		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+	}
+
+	/**
+	 * Renders a cell in the table
+	 * @param table the table to render into
+	 * @param value teh value to render
+	 * @param isSelected true if cell is selected
+	 * @param hasFocus true if the cell has focus
+	 * @param row the row id
+	 * @param column the column id
+	 * @return the component to render, in this case, this
+	 */
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+		boolean isMarked = false;
+		try {
+			isMarked = ((LogTable) table).getLogEvent(row).isMarked();
+		} catch (NullPointerException e) {
+			System.out.println("table = " + table);
+
+		}
+
+		if (isMarked && isSelected) {
+			setForeground(MARKER_COLOR_BRIGHTER);
+			setBackground(table.getSelectionBackground());
+		} else if (isSelected) {
+			setForeground(table.getSelectionForeground());
+			setBackground(table.getSelectionBackground());
+		} else if (isMarked) {
+			setForeground(table.getSelectionForeground());
+			setBackground(MARKER_COLOR);
+		} else {
+			setForeground(table.getForeground());
+			setBackground(table.getBackground());
+		}
+
+		if (value instanceof String) {
+			setText(value.toString());
+		} else if (value instanceof Long) {
+			formatter.setTime(((LogTable) table).getLogEvent(row).getWhen());
+			setText(DATE_FORMAT.format(formatter));
+		} else if (value instanceof ImageIcon) {
+			setIcon((ImageIcon) value);
+		} else {
+			setIcon(null);
+			setText(null);
+		}
+
+		return this;
+	}
 }

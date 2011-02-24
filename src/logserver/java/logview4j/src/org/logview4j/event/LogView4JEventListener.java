@@ -15,23 +15,22 @@
  * 
  * $Id: LogView4JEventListener.java,v 1.3 2005/09/18 13:44:28 jpassenger Exp $
  */
-
 package org.logview4j.event;
 
 /**
  * The interface that listeners must implement to receive events
  */
 public interface LogView4JEventListener {
-  
-  /**
-   * Fired when an event is received
-   * @param event the event
-   */
-  public void eventReceived(LogView4JEvent event);
-  
-  /**
-   * Invoked by the Event manager
-   * @return the events of interest to this class
-   */
-  public LogView4JEventId [] getEventsOfInterest();
+
+	/**
+	 * Fired when an event is received
+	 * @param event the event
+	 */
+	public void eventReceived(LogView4JEvent event);
+
+	/**
+	 * Invoked by the Event manager
+	 * @return the events of interest to this class
+	 */
+	public LogView4JEventId[] getEventsOfInterest();
 }

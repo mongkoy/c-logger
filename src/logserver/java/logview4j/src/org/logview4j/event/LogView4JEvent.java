@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4JEvent.java,v 1.4 2005/10/03 10:17:49 jpassenger Exp $
  */
-
 package org.logview4j.event;
 
 import java.util.HashMap;
@@ -25,68 +24,66 @@ import java.util.Map;
  * An event class for transmitting events
  */
 public class LogView4JEvent {
-  
-  /**
-   * The event id
-   */
-  private final LogView4JEventId eventId;
-  
-  /**
-   * The data for the event
-   */
-  private Map data = new HashMap();
-  
-  /**
-   * Constructs a new event with the requested event id
-   * @param eventId the event id for this event
-   */
-  public LogView4JEvent(LogView4JEventId eventId) {
-    this.eventId = eventId;
-  }
-  
-  
-  /**
-   * Fetches the event id
-   * @return the eventId for this event
-   */
-  public LogView4JEventId getEventId() {
-    return eventId;
-  }
 
-  /**
-   * Fetches data from this event
-   * @param key the key
-   * @return the value for the requested key
-   */
-  public Object get(LogView4JEventKey key) {
-    return data.get(key);
-  }
-  
-  /**
-   * Stores data in this event
-   * @param key the key
-   * @param value the value to store
-   */
-  public void set(LogView4JEventKey key, Object value) {
-    data.put(key, value);
-  }
-  
-  /**
-   * Checks to see if this event contains the requested key
-   * @param key the key to check for
-   * @return true if the key exists, false if it does not
-   */
-  public boolean contains(LogView4JEventKey key) {
-    return data.containsKey(key);
-  }
-  
-  /**
-   * Returns this as a String
-   * @return this as a String
-   */
-  public String toString() {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append("[LogView4JEvent id=").append(getEventId().getId()).append("]");
-    return buffer.toString();
-  }
+	/**
+	 * The event id
+	 */
+	private final LogView4JEventId eventId;
+	/**
+	 * The data for the event
+	 */
+	private Map data = new HashMap();
+
+	/**
+	 * Constructs a new event with the requested event id
+	 * @param eventId the event id for this event
+	 */
+	public LogView4JEvent(LogView4JEventId eventId) {
+		this.eventId = eventId;
+	}
+
+	/**
+	 * Fetches the event id
+	 * @return the eventId for this event
+	 */
+	public LogView4JEventId getEventId() {
+		return eventId;
+	}
+
+	/**
+	 * Fetches data from this event
+	 * @param key the key
+	 * @return the value for the requested key
+	 */
+	public Object get(LogView4JEventKey key) {
+		return data.get(key);
+	}
+
+	/**
+	 * Stores data in this event
+	 * @param key the key
+	 * @param value the value to store
+	 */
+	public void set(LogView4JEventKey key, Object value) {
+		data.put(key, value);
+	}
+
+	/**
+	 * Checks to see if this event contains the requested key
+	 * @param key the key to check for
+	 * @return true if the key exists, false if it does not
+	 */
+	public boolean contains(LogView4JEventKey key) {
+		return data.containsKey(key);
+	}
+
+	/**
+	 * Returns this as a String
+	 * @return this as a String
+	 */
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("[LogView4JEvent id=").append(getEventId().getId()).append("]");
+		return buffer.toString();
+	}
 }

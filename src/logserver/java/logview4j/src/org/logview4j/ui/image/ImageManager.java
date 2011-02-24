@@ -15,7 +15,6 @@
  * 
  * $Id: ImageManager.java,v 1.5 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.ui.image;
 
 import java.awt.MediaTracker;
@@ -28,69 +27,65 @@ import javax.swing.ImageIcon;
  * Manages loading and caching images
  */
 public class ImageManager {
-  
-  /**
-   * Singleton instance
-   */
-  private static ImageManager instance = new ImageManager();
-  
-  /**
-   * Cache of images
-   */
-  private HashMap images = null;
-  
-  /**
-   * Private constructor to support singleton
-   */
-  private ImageManager() {
-    images = new HashMap();
-  }
-  
-  /**
-   * Singleton accessor
-   * @return the singleton instance
-   */
-  public static ImageManager getInstance() {
-    return instance;
-  }
-  
-  /**
-   * Loads a cached image from a class offset from the ImageManager 
-   * waiting for it to be completely loading using a MediaTracker
-   * @param imageName the name of the image to load
-   * @return the cached image
-   */
-  public ImageIcon getImage(String imageName) {
-    ImageIcon image = null;
-    
-    if (images.containsKey(imageName)) {
-      image = (ImageIcon) images.get(imageName);
-    }
-    else {
-      URL url = getClass().getResource(imageName);
-      
-      if (url == null) {
-        //System.out.println("ImageManager.getImage() could not find image: " + imageName);
-      }
-      else {
-	      image = new ImageIcon(getClass().getResource(imageName));
-	      
-	      while (image.getImageLoadStatus() == MediaTracker.LOADING) {
-	        try {
-	          Thread.currentThread().wait(100);
-	        } catch (InterruptedException e) {
-	
-	        }
-	      }
-	      
-	      if (image != null && image.getImageLoadStatus() == MediaTracker.COMPLETE) {
-	        images.put(imageName, image);
-	      } else {
-	        //System.out.println("ImageManager.getImage() failed to load image: " + imageName);
-	      }
-      }
-    }
-    
-    return image;
-  }
+
+	/**
+	 * Singleton instance
+	 */
+	private static ImageManager instance = new ImageManager();
+	/**
+	 * Cache of images
+	 */
+	private HashMap images = null;
+
+	/**
+	 * Private constructor to support singleton
+	 */
+	private ImageManager() {
+		images = new HashMap();
+	}
+
+	/**
+	 * Singleton accessor
+	 * @return the singleton instance
+	 */
+	public static ImageManager getInstance() {
+		return instance;
+	}
+
+	/**
+	 * Loads a cached image from a class offset from the ImageManager
+	 * waiting for it to be completely loading using a MediaTracker
+	 * @param imageName the name of the image to load
+	 * @return the cached image
+	 */
+	public ImageIcon getImage(String imageName) {
+		ImageIcon image = null;
+
+		if (images.containsKey(imageName)) {
+			image = (ImageIcon) images.get(imageName);
+		} else {
+			URL url = getClass().getResource(imageName);
+
+			if (url == null) {
+				//System.out.println("ImageManager.getImage() could not find image: " + imageName);
+			} else {
+				image = new ImageIcon(getClass().getResource(imageName));
+
+				while (image.getImageLoadStatus() == MediaTracker.LOADING) {
+					try {
+						Thread.currentThread().wait(100);
+					} catch (InterruptedException e) {
+					}
+				}
+
+				if (image != null && image.getImageLoadStatus() == MediaTracker.COMPLETE) {
+					images.put(imageName, image);
+				} else {
+					//System.out.println("ImageManager.getImage() failed to load image: " + imageName);
+				}
+			}
+		}
+
+		return image;
+	}
 }

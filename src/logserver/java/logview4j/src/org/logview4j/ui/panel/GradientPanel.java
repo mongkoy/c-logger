@@ -45,7 +45,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-
 package org.logview4j.ui.panel;
 
 import java.awt.Color;
@@ -66,32 +65,32 @@ import org.logview4j.ui.color.ColorFactory;
  * Ripped from com.jgoodies.uif_lite.panel.SimpleInternalFrame 
  */
 public class GradientPanel extends JPanel {
-  
-  public GradientPanel(LayoutManager layoutManager) {
-    super(layoutManager);
-    init();
-  }
-  
-  protected void init() {
-    setBackground(ColorFactory.getGradientBackground());
-  }
-  
-  public void paintComponent(Graphics g) {
-    
-    super.paintComponent(g);
-    
-    if (!isOpaque()) {
-      return;
-    }
-    
-    Color control = UIManager.getColor("control");
-    int width  = getWidth();
-    int height = getHeight();
-    
-    Graphics2D g2 = (Graphics2D) g;
-    Paint storedPaint = g2.getPaint();
-    g2.setPaint(new GradientPaint(0, 0, getBackground(), width, 0, control));
-    g2.fillRect(0, 0, width, height);
-    g2.setPaint(storedPaint);
-  }
+
+	public GradientPanel(LayoutManager layoutManager) {
+		super(layoutManager);
+		init();
+	}
+
+	protected void init() {
+		setBackground(ColorFactory.getGradientBackground());
+	}
+
+	public void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+
+		if (!isOpaque()) {
+			return;
+		}
+
+		Color control = UIManager.getColor("control");
+		int width = getWidth();
+		int height = getHeight();
+
+		Graphics2D g2 = (Graphics2D) g;
+		Paint storedPaint = g2.getPaint();
+		g2.setPaint(new GradientPaint(0, 0, getBackground(), width, 0, control));
+		g2.fillRect(0, 0, width, height);
+		g2.setPaint(storedPaint);
+	}
 }

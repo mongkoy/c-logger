@@ -15,7 +15,6 @@
  * 
  * $Id: DetailsPanel.java,v 1.5 2006/02/22 23:39:56 jpassenger Exp $
  */
-
 package org.logview4j.ui.details;
 
 import java.awt.Font;
@@ -39,106 +38,95 @@ import org.logview4j.event.LogView4JEventManager;
  */
 public class DetailsPanel extends JScrollPane implements LogView4JEventListener {
 
-  protected JTextArea textArea = new JTextArea();
-  
-  public DetailsPanel() {
-    init();
-  }
-  
-  /**
-   * Initializes this component
-   */
-  protected void init() {
-    getViewport().add(textArea);
-    setBorder(BorderFactory.createEmptyBorder());
-    
-    textArea.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+	protected JTextArea textArea = new JTextArea();
 
-    textArea.setLineWrap(false);
-    textArea.setTabSize(4);
-    textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-    textArea.setEditable(false);
-    
-    registerListeners();
-  }
+	public DetailsPanel() {
+		init();
+	}
 
+	/**
+	 * Initializes this component
+	 */
+	protected void init() {
+		getViewport().add(textArea);
+		setBorder(BorderFactory.createEmptyBorder());
 
+		textArea.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-  /**
-   * Registers for selection events
-   */
-  protected void registerListeners() {
-    LogView4JEventManager.getInstance().register(this);
-  }
+		textArea.setLineWrap(false);
+		textArea.setTabSize(4);
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+		textArea.setEditable(false);
 
+		registerListeners();
+	}
 
+	/**
+	 * Registers for selection events
+	 */
+	protected void registerListeners() {
+		LogView4JEventManager.getInstance().register(this);
+	}
 
-  /**
-   * Handles events from the event manager
-   * @param event the event
-   */
-  public void eventReceived(LogView4JEvent event) {
-    switch (event.getEventId().getId()) {
-      case LogView4JEventId.LOGGING_EVENT_SELECTED_ID: {
-        logEventSelected(event);
-        break;
-      }
-      case LogView4JEventId.COPY_DETAILS_ID: {
-        copy();
-        break;
-      }
-    }
-  }
+	/**
+	 * Handles events from the event manager
+	 * @param event the event
+	 */
+	public void eventReceived(LogView4JEvent event) {
+		switch (event.getEventId().getId()) {
+			case LogView4JEventId.LOGGING_EVENT_SELECTED_ID: {
+				logEventSelected(event);
+				break;
+			}
+			case LogView4JEventId.COPY_DETAILS_ID: {
+				copy();
+				break;
+			}
+		}
+	}
 
-  /**
-   * Fired when a log event is selected, the log event itself might
-   * be null
-   * @param event the event dto which contains the logging event
-   */
-  protected void logEventSelected(LogView4JEvent event) {
-    LogView4JLoggingEvent[] loggingEvents = (LogView4JLoggingEvent[]) event.get(LogView4JEventKey.LOGGING_EVENT);
-    if (loggingEvents.length == 1){
-      setLoggingEvent(loggingEvents[0]);      
-    }
-    else {
-      setLoggingEvent(null);      
-    }
-  }
-  
-  
+	/**
+	 * Fired when a log event is selected, the log event itself might
+	 * be null
+	 * @param event the event dto which contains the logging event
+	 */
+	protected void logEventSelected(LogView4JEvent event) {
+		LogView4JLoggingEvent[] loggingEvents = (LogView4JLoggingEvent[]) event.get(LogView4JEventKey.LOGGING_EVENT);
+		if (loggingEvents.length == 1) {
+			setLoggingEvent(loggingEvents[0]);
+		} else {
+			setLoggingEvent(null);
+		}
+	}
 
-  /**
-   * Sets the logging event to display
-   * @param loggingEvent the logging event to display
-   */
-  public void setLoggingEvent(LogView4JLoggingEvent loggingEvent) {
-    if (loggingEvent == null) {
-      textArea.setText(null);
-    }
-    else {
-      textArea.setText(loggingEvent.getFormattedString());
-      textArea.setCaretPosition(0);
-    }
-  }
+	/**
+	 * Sets the logging event to display
+	 * @param loggingEvent the logging event to display
+	 */
+	public void setLoggingEvent(LogView4JLoggingEvent loggingEvent) {
+		if (loggingEvent == null) {
+			textArea.setText(null);
+		} else {
+			textArea.setText(loggingEvent.getFormattedString());
+			textArea.setCaretPosition(0);
+		}
+	}
 
-  /**
-   * @return
-   */
-  public LogView4JEventId[] getEventsOfInterest() {
-    return new LogView4JEventId[] {
-      LogView4JEventId.LOGGING_EVENT_SELECTED,
-      LogView4JEventId.COPY_DETAILS,
-    };
-  }
+	/**
+	 * @return
+	 */
+	public LogView4JEventId[] getEventsOfInterest() {
+		return new LogView4JEventId[]{
+					LogView4JEventId.LOGGING_EVENT_SELECTED,
+					LogView4JEventId.COPY_DETAILS,};
+	}
 
-
-  /**
-   * Copies the details to the clipboard
-   */
-  private void copy() {
-    StringSelection st = new StringSelection(textArea.getText());
-    Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
-    cp.setContents(st, null);
-  }
-  
+	/**
+	 * Copies the details to the clipboard
+	 */
+	private void copy() {
+		StringSelection st = new StringSelection(textArea.getText());
+		Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
+		cp.setContents(st, null);
+	}
 }

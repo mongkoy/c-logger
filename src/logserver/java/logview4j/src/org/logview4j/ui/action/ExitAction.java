@@ -15,7 +15,6 @@
  * 
  * $Id: ExitAction.java,v 1.1 2005/10/01 14:45:24 jpassenger Exp $
  */
-
 package org.logview4j.ui.action;
 
 import java.awt.event.ActionEvent;
@@ -25,21 +24,20 @@ import javax.swing.Action;
 
 import org.logview4j.ui.LogView4JFrame;
 
-
 /**
  * Handles exiting the application
  */
 public class ExitAction extends AbstractAction {
-  public ExitAction() {
-    putValue(Action.NAME, "Exit");
-  }
 
-  /**
-   * Handles exiting the system
-   * @param e the action event
-   */
-  public void actionPerformed(ActionEvent e) {
-    LogView4JFrame.exit();    
-  }
-  
+	public ExitAction() {
+		putValue(Action.NAME, "Exit");
+	}
+
+	/**
+	 * Handles exiting the system
+	 * @param e the action event
+	 */
+	public void actionPerformed(ActionEvent e) {
+		LogView4JFrame.exit();
+	}
 }

@@ -15,7 +15,6 @@
  * 
  * $Id: LogView4JLoggingEvent.java,v 1.9 2006/06/07 01:36:39 jpassenger Exp $
  */
-
 package org.logview4j.dto;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +29,6 @@ import org.logview4j.config.ConfigurationKey;
 import org.logview4j.config.ConfigurationManager;
 import org.logview4j.ui.image.ImageManager;
 
-
 /**
  * A light weight, immutible logging event that extracts what is needed from the log4j log event and
  * discards the rest.
@@ -42,299 +40,284 @@ import org.logview4j.ui.image.ImageManager;
  * the inbound LoggingEvent objects is warranted
  */
 public class LogView4JLoggingEvent {
-  
-  /**
-     * Flags for resolving levels in filters
-     */
-  public static final int LEVEL_DEBUG_FLAG = 1;
-  public static final int LEVEL_INFO_FLAG = 2;
-  public static final int LEVEL_WARN_FLAG = 4;
-  public static final int LEVEL_ERROR_FLAG = 8;
-  public static final int LEVEL_FATAL_FLAG = 16;
-  
-  private static long eventIdGenerator = 0;
-  
-  private static final int TOTAL_LENGTH = 19;
-  
-  private static int maxPayloadSize = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENT_PAYLOAD_SIZE, 100000);
-  
-  private static final String TRUNCATE_MESSAGE_PREFIX = "\n\n[Message truncated from: "; 
-  private static final String TRUNCATE_MESSAGE_SUFFIX = " characters, adjust logview4j.max.event.payload.size if required]";
-  
-  /**
-     * 32 bit references to these strings for light-weight storage
-     */
-  private static final String [] LEVELS = new String [] {
-    "DEBUG",
-    "INFO",
-    "WARN",
-    "ERROR",
-    "FATAL"
-  };
-  
-  /**
-     * 32 bit references to these strings for light-weight storage
-     */
-  private static final String [] ICONS = new String [] {
-    "images/debug.gif",
-    "images/info.gif",
-    "images/warning.gif",
-    "images/error.gif",
-    "images/fatal.gif"
-  };
-  
-  /**
-     * TODO make this configurable
-     */
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-  
-  /**
-     * All final as these are immutable
-     */
-  private final String category;
-  private final int level;
-  private final String [] stackTrace;
-  private final String message;
-  private final long when;
-  private final String fullyQualifiedClassName;
-  private transient String formattedString = null;
-  private transient boolean marked = false;
-  private final long eventId;
-  private final long combinedTimeStamp;
-  
-  /**
-     * Extract log information locally
-     * @param e the event to extract from
-     */
-  public LogView4JLoggingEvent(LoggingEvent e) {
-    level = e.getLevel().toInt();
-    category = e.getLoggerName();
-    String tempMessage = e.getMessage() != null ? e.getMessage().toString() : null;
-    when = e.timeStamp;
-    fullyQualifiedClassName = e.fqnOfCategoryClass;
-    stackTrace = e.getThrowableStrRep();
-    eventId = eventIdGenerator++;
-    combinedTimeStamp = createCombinedTimeStamp();
-    
-    /**
-     * Truncate huge messages up front
-     */
-    if (tempMessage != null && tempMessage.length() > maxPayloadSize) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(tempMessage.substring(0, maxPayloadSize));
-        buffer.append(TRUNCATE_MESSAGE_PREFIX)
-            .append(tempMessage.length())
-            .append(TRUNCATE_MESSAGE_SUFFIX);
-        message = buffer.toString(); 
-    }
-    else {
-        message = tempMessage;
-    }
-    
-    tempMessage = null;
-    e = null;
-  }
+	/**
+	 * Flags for resolving levels in filters
+	 */
+	public static final int LEVEL_DEBUG_FLAG = 1;
+	public static final int LEVEL_INFO_FLAG = 2;
+	public static final int LEVEL_WARN_FLAG = 4;
+	public static final int LEVEL_ERROR_FLAG = 8;
+	public static final int LEVEL_FATAL_FLAG = 16;
+	private static long eventIdGenerator = 0;
+	private static final int TOTAL_LENGTH = 19;
+	private static int maxPayloadSize = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENT_PAYLOAD_SIZE, 100000);
+	private static final String TRUNCATE_MESSAGE_PREFIX = "\n\n[Message truncated from: ";
+	private static final String TRUNCATE_MESSAGE_SUFFIX = " characters, adjust logview4j.max.event.payload.size if required]";
+	/**
+	 * 32 bit references to these strings for light-weight storage
+	 */
+	private static final String[] LEVELS = new String[]{
+		"DEBUG",
+		"INFO",
+		"WARN",
+		"ERROR",
+		"FATAL"
+	};
+	/**
+	 * 32 bit references to these strings for light-weight storage
+	 */
+	private static final String[] ICONS = new String[]{
+		"images/debug.gif",
+		"images/info.gif",
+		"images/warning.gif",
+		"images/error.gif",
+		"images/fatal.gif"
+	};
+	/**
+	 * TODO make this configurable
+	 */
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	/**
+	 * All final as these are immutable
+	 */
+	private final String category;
+	private final int level;
+	private final String[] stackTrace;
+	private final String message;
+	private final long when;
+	private final String fullyQualifiedClassName;
+	private transient String formattedString = null;
+	private transient boolean marked = false;
+	private final long eventId;
+	private final long combinedTimeStamp;
 
-  
-  /**
-     * Extract a reference to the static icon name
-     * @param levelInt the int value of the level
-     * @return an icon name
-     */
-  private String getIconName() {
-   
-    switch (level) {
-      case Priority.DEBUG_INT: {
-        return ICONS[0];
-      }
-      case Priority.INFO_INT: {
-        return ICONS[1];
-      }
-      case Priority.WARN_INT: {
-        return ICONS[2];
-      }
-      case Priority.ERROR_INT: {
-        return ICONS[3];
-      }
-      case Priority.FATAL_INT: {
-        return ICONS[4];
-      }
-    }
-    
-    return null;
-  }
-  /**
-     * Extract a reference to the static level strings
-     * @param levelInt the int value of the level
-     * @return a level string
-     */
-  public String getLevelString() {
-   
-    switch (level) {
-      case Priority.DEBUG_INT: {
-        return LEVELS[0];
-      }
-      case Priority.INFO_INT: {
-        return LEVELS[1];
-      }
-      case Priority.WARN_INT: {
-        return LEVELS[2];
-      }
-      case Priority.ERROR_INT: {
-        return LEVELS[3];
-      }
-      case Priority.FATAL_INT: {
-        return LEVELS[4];
-      }
-    }
-    
-    return null;
-  }
-  
-  public String getCategory() {
-    return category;
-  }
+	/**
+	 * Extract log information locally
+	 * @param e the event to extract from
+	 */
+	public LogView4JLoggingEvent(LoggingEvent e) {
+		level = e.getLevel().toInt();
+		category = e.getLoggerName();
+		String tempMessage = e.getMessage() != null ? e.getMessage().toString() : null;
+		when = e.timeStamp;
+		fullyQualifiedClassName = e.fqnOfCategoryClass;
+		stackTrace = e.getThrowableStrRep();
+		eventId = eventIdGenerator++;
+		combinedTimeStamp = createCombinedTimeStamp();
 
-  public String getFullyQualifiedClassName() {
-    return fullyQualifiedClassName;
-  }
+		/**
+		 * Truncate huge messages up front
+		 */
+		if (tempMessage != null && tempMessage.length() > maxPayloadSize) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(tempMessage.substring(0, maxPayloadSize));
+			buffer.append(TRUNCATE_MESSAGE_PREFIX).append(tempMessage.length()).append(TRUNCATE_MESSAGE_SUFFIX);
+			message = buffer.toString();
+		} else {
+			message = tempMessage;
+		}
 
-  public int getLevel() {
-    return level;
-  }
+		tempMessage = null;
+		e = null;
+	}
 
-  public String getMessage() {
-    return message;
-  }
+	/**
+	 * Extract a reference to the static icon name
+	 * @param levelInt the int value of the level
+	 * @return an icon name
+	 */
+	private String getIconName() {
 
-  public String [] getStackTrace() {
-    return stackTrace;
-  }
+		switch (level) {
+			case Priority.DEBUG_INT: {
+				return ICONS[0];
+			}
+			case Priority.INFO_INT: {
+				return ICONS[1];
+			}
+			case Priority.WARN_INT: {
+				return ICONS[2];
+			}
+			case Priority.ERROR_INT: {
+				return ICONS[3];
+			}
+			case Priority.FATAL_INT: {
+				return ICONS[4];
+			}
+		}
 
-  public long getWhen() {
-    return when;
-  }
-  
-  public long getCombinedTimeStamp() {
-    return combinedTimeStamp;
-  }
-  
-  public boolean getStackTracePresent() {
-    return stackTrace != null;
-  }
-  
-  public ImageIcon getIcon() {
-    return ImageManager.getInstance().getImage(getIconName());
-  }
-  
-  /**
-     * Fecth a flag for the current level to enable quick determination in a set of level flags
-     * @return the level flag for this log events level
-     */
-  public int getLevelFlag() {
-    switch (level) {
-      case Priority.DEBUG_INT: {
-        return LEVEL_DEBUG_FLAG;
-      }
-      case Priority.INFO_INT: {
-        return LEVEL_INFO_FLAG;
-      }
-      case Priority.WARN_INT: {
-        return LEVEL_WARN_FLAG;
-      }
-      case Priority.ERROR_INT: {
-        return LEVEL_ERROR_FLAG;
-      }
-      case Priority.FATAL_INT: {
-        return LEVEL_FATAL_FLAG;
-      }
-      default: {
-        return 0;
-      }
-    }
-  }
-  
-  /**
-     * Fetch a cached formatted string
-     * @return the cached formatted string
-     */
-  public String getFormattedString() {
-    if (formattedString == null) {
-      StringBuffer buffer = new StringBuffer();
-      
-      buffer.append("Level:     ").append(getLevelString()).append('\n');
-      buffer.append("When:      ").append(DATE_FORMAT.format(new Date(when))).append('\n');
-      buffer.append("From:      ").append(getCategory()).append("\n\n");
-      buffer.append(message).append('\n');
-      if (getStackTracePresent()) {
-        buffer.append("\nThrowable: ").append(stackTrace[0]).append('\n');
-        for (int i = 1; i < stackTrace.length; i++) {
-          buffer.append(stackTrace[i]).append('\n');
-        }
-      }
-      
-      formattedString = buffer.toString();
-      buffer.setLength(0);
-      buffer = null;
-    }
-    
-    return formattedString;
-  }
+		return null;
+	}
 
-  /**
-     * Harvest the quick filter match items
-     * @param textToMatch the text to match against
-     */
-  public void harvestQuickFilterItems(List textToMatch) {
-    textToMatch.add(getCategory());
-    
-    textToMatch.add(getMessage());
-    
-    if (getStackTracePresent()) {
-      for (int i = 0; i < stackTrace.length; i++) {
-        textToMatch.add(stackTrace[i]);
-      }
-    }
-  }
+	/**
+	 * Extract a reference to the static level strings
+	 * @param levelInt the int value of the level
+	 * @return a level string
+	 */
+	public String getLevelString() {
 
+		switch (level) {
+			case Priority.DEBUG_INT: {
+				return LEVELS[0];
+			}
+			case Priority.INFO_INT: {
+				return LEVELS[1];
+			}
+			case Priority.WARN_INT: {
+				return LEVELS[2];
+			}
+			case Priority.ERROR_INT: {
+				return LEVELS[3];
+			}
+			case Priority.FATAL_INT: {
+				return LEVELS[4];
+			}
+		}
 
-  /**
-     * Toggles the marker on this log event
-     */
-  public void toggleMarker() {
-    marked = !marked;
-  }
-  
-  
-  /**
-     * 
-     * @return the marked.
-     */
-  public boolean isMarked() {
-    return marked;
-  }
-  
-  /**
-     * Creates a combined timestamp where the event id is used to descriminate log events that
-     * arrive at exactly teh same millisecond
-     * @return the combined timestamp
-     */
-  private long createCombinedTimeStamp() {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(when);
+		return null;
+	}
 
-    String idString = eventId + "";
-    
-    int lengthToPad = TOTAL_LENGTH - buffer.length() - idString.length();
-    
-    for (int i = 0; i < lengthToPad; i++) {
-      buffer.append('0');
-    }
-    
-    buffer.append(idString);
-    
-    return Long.parseLong(buffer.toString());
-  }
+	public String getCategory() {
+		return category;
+	}
 
+	public String getFullyQualifiedClassName() {
+		return fullyQualifiedClassName;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public String[] getStackTrace() {
+		return stackTrace;
+	}
+
+	public long getWhen() {
+		return when;
+	}
+
+	public long getCombinedTimeStamp() {
+		return combinedTimeStamp;
+	}
+
+	public boolean getStackTracePresent() {
+		return stackTrace != null;
+	}
+
+	public ImageIcon getIcon() {
+		return ImageManager.getInstance().getImage(getIconName());
+	}
+
+	/**
+	 * Fecth a flag for the current level to enable quick determination in a set of level flags
+	 * @return the level flag for this log events level
+	 */
+	public int getLevelFlag() {
+		switch (level) {
+			case Priority.DEBUG_INT: {
+				return LEVEL_DEBUG_FLAG;
+			}
+			case Priority.INFO_INT: {
+				return LEVEL_INFO_FLAG;
+			}
+			case Priority.WARN_INT: {
+				return LEVEL_WARN_FLAG;
+			}
+			case Priority.ERROR_INT: {
+				return LEVEL_ERROR_FLAG;
+			}
+			case Priority.FATAL_INT: {
+				return LEVEL_FATAL_FLAG;
+			}
+			default: {
+				return 0;
+			}
+		}
+	}
+
+	/**
+	 * Fetch a cached formatted string
+	 * @return the cached formatted string
+	 */
+	public String getFormattedString() {
+		if (formattedString == null) {
+			StringBuffer buffer = new StringBuffer();
+
+			buffer.append("Level:     ").append(getLevelString()).append('\n');
+			buffer.append("When:      ").append(DATE_FORMAT.format(new Date(when))).append('\n');
+			buffer.append("From:      ").append(getCategory()).append("\n\n");
+			buffer.append(message).append('\n');
+			if (getStackTracePresent()) {
+				buffer.append("\nThrowable: ").append(stackTrace[0]).append('\n');
+				for (int i = 1; i < stackTrace.length; i++) {
+					buffer.append(stackTrace[i]).append('\n');
+				}
+			}
+
+			formattedString = buffer.toString();
+			buffer.setLength(0);
+			buffer = null;
+		}
+
+		return formattedString;
+	}
+
+	/**
+	 * Harvest the quick filter match items
+	 * @param textToMatch the text to match against
+	 */
+	public void harvestQuickFilterItems(List textToMatch) {
+		textToMatch.add(getCategory());
+
+		textToMatch.add(getMessage());
+
+		if (getStackTracePresent()) {
+			for (int i = 0; i < stackTrace.length; i++) {
+				textToMatch.add(stackTrace[i]);
+			}
+		}
+	}
+
+	/**
+	 * Toggles the marker on this log event
+	 */
+	public void toggleMarker() {
+		marked = !marked;
+	}
+
+	/**
+	 *
+	 * @return the marked.
+	 */
+	public boolean isMarked() {
+		return marked;
+	}
+
+	/**
+	 * Creates a combined timestamp where the event id is used to descriminate log events that
+	 * arrive at exactly teh same millisecond
+	 * @return the combined timestamp
+	 */
+	private long createCombinedTimeStamp() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(when);
+
+		String idString = eventId + "";
+
+		int lengthToPad = TOTAL_LENGTH - buffer.length() - idString.length();
+
+		for (int i = 0; i < lengthToPad; i++) {
+			buffer.append('0');
+		}
+
+		buffer.append(idString);
+
+		return Long.parseLong(buffer.toString());
+	}
 }

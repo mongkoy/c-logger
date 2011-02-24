@@ -15,7 +15,6 @@
  * 
  * $Id: SocketProcessorManager.java,v 1.3 2005/12/27 14:53:11 jpassenger Exp $
  */
-
 package org.logview4j.listener;
 
 import org.logview4j.event.LogView4JEvent;
@@ -29,33 +28,32 @@ import org.logview4j.event.LogView4JEventManager;
  */
 public class SocketProcessorManager implements LogView4JEventListener {
 
-  protected volatile boolean paused = false;
-  
-  private static final SocketProcessorManager instance = new SocketProcessorManager();
-  
-  private SocketProcessorManager() {
-    LogView4JEventManager.getInstance().register(this);
-  }
-  
-  public static SocketProcessorManager getInstance() {
-    return instance;
-  }
-  
-  public boolean isPaused() {
-    return paused;
-  }
-  
-  /**
-   * Fired when the system is paused or unpaused
-   * @param event the event
-   */
-  public void eventReceived(LogView4JEvent event) {
-    paused = ((Boolean) event.get(LogView4JEventKey.PAUSED)).booleanValue();
-  }
- 
-  public LogView4JEventId[] getEventsOfInterest() {
-    return new LogView4JEventId[] {
-        LogView4JEventId.PAUSE_PROCESSING_EVENTS
-    };
-  }
+	protected volatile boolean paused = false;
+	private static final SocketProcessorManager instance = new SocketProcessorManager();
+
+	private SocketProcessorManager() {
+		LogView4JEventManager.getInstance().register(this);
+	}
+
+	public static SocketProcessorManager getInstance() {
+		return instance;
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	/**
+	 * Fired when the system is paused or unpaused
+	 * @param event the event
+	 */
+	public void eventReceived(LogView4JEvent event) {
+		paused = ((Boolean) event.get(LogView4JEventKey.PAUSED)).booleanValue();
+	}
+
+	public LogView4JEventId[] getEventsOfInterest() {
+		return new LogView4JEventId[]{
+					LogView4JEventId.PAUSE_PROCESSING_EVENTS
+				};
+	}
 }

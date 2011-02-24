@@ -15,7 +15,6 @@
  * 
  * $Id: ToolBarButton.java,v 1.3 2005/10/03 10:17:51 jpassenger Exp $
  */
-
 package org.logview4j.ui.toolbar;
 
 import java.awt.Insets;
@@ -29,22 +28,22 @@ import org.logview4j.ui.image.ImageManager;
  * A JButton for displaying in the MinimalJToolBar
  */
 public class ToolBarButton extends JButton {
-  
-  public ToolBarButton(String name, String altText, String icon) {
-    super();
-    setName(name);
-    setIcon(ImageManager.getInstance().getImage(icon));
-    setToolTipText(altText);
-    UIManager.put("Button.select", UIManager.get("control"));
-    init();
-  }
-  
-  /**
-   * Initializes the button
-   *
-   */
-  protected void init() {
-    setOpaque(false);
-    setMargin(new Insets(1, 1, 1, 1));
-  }
+
+	public ToolBarButton(String name, String altText, String icon) {
+		super();
+		setName(name);
+		setIcon(ImageManager.getInstance().getImage(icon));
+		setToolTipText(altText);
+		UIManager.put("Button.select", UIManager.get("control"));
+		init();
+	}
+
+	/**
+	 * Initializes the button
+	 *
+	 */
+	protected void init() {
+		setOpaque(false);
+		setMargin(new Insets(1, 1, 1, 1));
+	}
 }

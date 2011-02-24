@@ -15,7 +15,6 @@
  * 
  * $Id: QuickFilterMatcherEditor.java,v 1.4 2006/02/22 02:39:16 jpassenger Exp $
  */
-
 package org.logview4j.ui.matcher;
 
 import java.util.regex.Pattern;
@@ -31,93 +30,87 @@ import ca.odell.glazedlists.matchers.AbstractMatcherEditor;
 import ca.odell.glazedlists.matchers.Matcher;
 
 public class QuickFilterMatcherEditor extends AbstractMatcherEditor implements
-    LogView4JEventListener {
+		LogView4JEventListener {
 
-  private static final Matcher NO_MATCHER = new QuickFilterMatcher(
-      new String[0], new LogLevelFilterator());
+	private static final Matcher NO_MATCHER = new QuickFilterMatcher(
+			new String[0], new LogLevelFilterator());
+	protected final LogLevelFilterator filtrator = new LogLevelFilterator();
+	protected Matcher matcher = NO_MATCHER;
+	// member variable use to indicate if filter is valid.
+	private boolean valid;
 
-  protected final LogLevelFilterator filtrator = new LogLevelFilterator();
+	public QuickFilterMatcherEditor() {
+		this.valid = true;
+		LogView4JEventManager.getInstance().register(this);
+	}
 
-  protected Matcher matcher = NO_MATCHER;
+	public Matcher getMatcher() {
+		return matcher;
+	}
 
-  // member variable use to indicate if filter is valid.
-  private boolean valid;
+	public void eventReceived(LogView4JEvent event) {
+		Boolean regex = (Boolean) event.get(LogView4JEventKey.REGEX_FILTER);
+		String value = (String) event.get(LogView4JEventKey.QUICK_FILTER);
+		boolean isValid = true;
+		String invalidText = null;
+		boolean matchesAll = false;
+		Matcher newMatcher = null;
 
-  public QuickFilterMatcherEditor() {
-    this.valid = true;
-    LogView4JEventManager.getInstance().register(this);
-  }
+		String[] filterValues = new String[0];
+		if (value == null || value.trim().equals("")) {
+			newMatcher = NO_MATCHER;
+			matchesAll = true;
+		} else {
+			if (Boolean.TRUE.equals(regex)) {
+				Pattern pattern = null;
+				try {
+					pattern = Pattern.compile(value);
+					newMatcher = new RegexFilterMatcher(pattern, filtrator);
+				} catch (PatternSyntaxException pse) {
+					// illigal pattern, we want to ignore the change.
+					isValid = false;
+					invalidText = "Illegal Pattern : " + pse.getMessage();
+				}
+			} else {
+				filterValues = value.split(" ");
+				newMatcher = new QuickFilterMatcher(filterValues, filtrator);
+			}
+		}
+		if (isValid) {
+			matcher = newMatcher;
+			if (matchesAll) {
+				fireMatchAll();
+			} else {
+				/**
+				 * Must clear the selection to avoid problems with table trying to
+				 * select rows that don't exist anymore
+				 */
+				LogView4JEvent clearEvent = new LogView4JEvent(
+						LogView4JEventId.CLEAR_EVENT_SELECTION);
+				LogView4JEventManager.getInstance().fireEvent(clearEvent);
+				fireChanged(matcher);
+			}
+			if (!valid) {
+				valid = true;
+				LogView4JEvent validFilterEvent = new LogView4JEvent(
+						LogView4JEventId.FILTER_VALID);
+				validFilterEvent.set(LogView4JEventKey.FILTER_VALID, Boolean.TRUE);
+				LogView4JEventManager.getInstance().fireEvent(validFilterEvent);
+			}
+		} else {
+			// invalid filter
+			if (valid) {
+				valid = false;
+				LogView4JEvent validFilterEvent = new LogView4JEvent(
+						LogView4JEventId.FILTER_VALID);
+				validFilterEvent.set(LogView4JEventKey.FILTER_VALID, Boolean.FALSE);
+				validFilterEvent.set(LogView4JEventKey.ERROR_MESSAGE, invalidText);
+				LogView4JEventManager.getInstance().fireEvent(validFilterEvent);
+			}
+		}
+	}
 
-  public Matcher getMatcher() {
-    return matcher;
-  }
-
-  public void eventReceived(LogView4JEvent event) {
-    Boolean regex = (Boolean) event.get(LogView4JEventKey.REGEX_FILTER);
-    String value = (String) event.get(LogView4JEventKey.QUICK_FILTER);
-    boolean isValid = true;
-    String invalidText = null;
-    boolean matchesAll = false;
-    Matcher newMatcher = null;
-
-    String[] filterValues = new String[0];
-    if (value == null || value.trim().equals("")) {
-      newMatcher = NO_MATCHER;
-      matchesAll = true;
-    } else {
-      if (Boolean.TRUE.equals(regex)) {
-        Pattern pattern = null;
-        try {
-          pattern = Pattern.compile(value);
-          newMatcher = new RegexFilterMatcher(pattern, filtrator);
-        } catch (PatternSyntaxException pse) {
-          // illigal pattern, we want to ignore the change.
-          isValid = false;
-          invalidText = "Illegal Pattern : " + pse.getMessage(); 
-        }
-      } else {
-        filterValues = value.split(" ");
-        newMatcher = new QuickFilterMatcher(filterValues, filtrator);
-      }
-    }
-    if (isValid){
-      matcher = newMatcher;
-      if (matchesAll){
-        fireMatchAll();
-      }
-      else {
-        /**
-         * Must clear the selection to avoid problems with table trying to
-         * select rows that don't exist anymore
-         */
-        LogView4JEvent clearEvent = new LogView4JEvent(
-            LogView4JEventId.CLEAR_EVENT_SELECTION);
-        LogView4JEventManager.getInstance().fireEvent(clearEvent);
-        fireChanged(matcher);
-      }
-      if (!valid){
-        valid = true;
-        LogView4JEvent validFilterEvent = new LogView4JEvent(
-            LogView4JEventId.FILTER_VALID);
-        validFilterEvent.set(LogView4JEventKey.FILTER_VALID, Boolean.TRUE);
-        LogView4JEventManager.getInstance().fireEvent(validFilterEvent);
-      }
-    }
-    else {
-      // invalid filter
-      if (valid){
-        valid = false;
-        LogView4JEvent validFilterEvent = new LogView4JEvent(
-            LogView4JEventId.FILTER_VALID);
-        validFilterEvent.set(LogView4JEventKey.FILTER_VALID, Boolean.FALSE);
-        validFilterEvent.set(LogView4JEventKey.ERROR_MESSAGE, invalidText);
-        LogView4JEventManager.getInstance().fireEvent(validFilterEvent);
-      }
-    }
-  }
-
-  public LogView4JEventId[] getEventsOfInterest() {
-    return new LogView4JEventId[] { LogView4JEventId.QUICK_FILTER_CHANGED };
-  }
-
+	public LogView4JEventId[] getEventsOfInterest() {
+		return new LogView4JEventId[]{LogView4JEventId.QUICK_FILTER_CHANGED};
+	}
 }
