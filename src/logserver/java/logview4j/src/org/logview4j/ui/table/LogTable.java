@@ -120,8 +120,8 @@ public class LogTable extends JTable implements LogView4JEventListener, MouseLis
 		getColumnModel().getColumn(1).setMinWidth(20);
 		getColumnModel().getColumn(2).setPreferredWidth(50);
 		getColumnModel().getColumn(2).setMaxWidth(50);
-		getColumnModel().getColumn(3).setPreferredWidth(115);
-		getColumnModel().getColumn(3).setMaxWidth(115);
+		getColumnModel().getColumn(3).setPreferredWidth(150);
+		getColumnModel().getColumn(3).setMaxWidth(150);
 		getColumnModel().getColumn(4).setPreferredWidth(200);
 		getColumnModel().getColumn(5).setPreferredWidth(300);
 

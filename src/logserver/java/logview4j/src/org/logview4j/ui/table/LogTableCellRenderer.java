@@ -27,17 +27,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import org.logview4j.config.ConfigurationKey;
+import org.logview4j.config.ConfigurationManager;
 
 /**
  * A cell renderer for the log table
  */
 public class LogTableCellRenderer extends JLabel implements TableCellRenderer {
 
-	private final Date formatter = new Date();
+	private final Date date = new Date();
 	/**
-	 * TODO make this configurable
+	 * Timestamp display format
 	 */
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat
+		(ConfigurationManager.getInstance().getString
+		(ConfigurationKey.TIMESTAMP_DISPLAY_FORMAT));
 	/**
 	 * Orange marker color
 	 * TODO make this configurable
@@ -87,8 +91,8 @@ public class LogTableCellRenderer extends JLabel implements TableCellRenderer {
 		if (value instanceof String) {
 			setText(value.toString());
 		} else if (value instanceof Long) {
-			formatter.setTime(((LogTable) table).getLogEvent(row).getWhen());
-			setText(DATE_FORMAT.format(formatter));
+			date.setTime(((LogTable) table).getLogEvent(row).getWhen());
+			setText(dateFormatter.format(date));
 		} else if (value instanceof ImageIcon) {
 			setIcon((ImageIcon) value);
 		} else {

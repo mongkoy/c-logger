@@ -75,9 +75,11 @@ public class LogView4JLoggingEvent {
 		"images/fatal.gif"
 	};
 	/**
-	 * TODO make this configurable
+	 * Timestamp display format
 	 */
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat
+		(ConfigurationManager.getInstance().getString
+		(ConfigurationKey.TIMESTAMP_DISPLAY_FORMAT));
 	/**
 	 * All final as these are immutable
 	 */
@@ -247,7 +249,7 @@ public class LogView4JLoggingEvent {
 			StringBuffer buffer = new StringBuffer();
 
 			buffer.append("Level:     ").append(getLevelString()).append('\n');
-			buffer.append("When:      ").append(DATE_FORMAT.format(new Date(when))).append('\n');
+			buffer.append("When:      ").append(dateFormatter.format(new Date(when))).append('\n');
 			buffer.append("From:      ").append(getCategory()).append("\n\n");
 			buffer.append(message).append('\n');
 
