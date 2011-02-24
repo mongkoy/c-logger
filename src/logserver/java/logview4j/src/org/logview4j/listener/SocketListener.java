@@ -43,7 +43,7 @@ public class SocketListener implements Runnable {
 	public SocketListener(int port) throws LogView4JException {
 
 		try {
-			SocketProcessorManager.getInstance();
+			DataProcessorManager.getInstance();
 			serverSocket = new ServerSocket(port);
 			startAccepting();
 		} catch (IOException io) {

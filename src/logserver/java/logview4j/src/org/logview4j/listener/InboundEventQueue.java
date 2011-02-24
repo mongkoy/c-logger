@@ -102,7 +102,7 @@ public class InboundEventQueue {
 				/**
 				 * Fire events when not paused
 				 */
-				if (!SocketProcessorManager.getInstance().isPaused()) {
+				if (!DataProcessorManager.getInstance().isPaused()) {
 					List events = new ArrayList();
 					Object value = poll(millisBetweenUpdates);
 

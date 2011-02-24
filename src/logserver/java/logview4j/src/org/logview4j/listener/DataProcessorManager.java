@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * $Id: SocketProcessorManager.java,v 1.3 2005/12/27 14:53:11 jpassenger Exp $
+ * $Id: DataProcessorManager.java,v 1.3 2005/12/27 14:53:11 jpassenger Exp $
  */
 package org.logview4j.listener;
 
@@ -24,18 +24,18 @@ import org.logview4j.event.LogView4JEventListener;
 import org.logview4j.event.LogView4JEventManager;
 
 /**
- * Manages socket processors
+ * Manages data processors
  */
-public class SocketProcessorManager implements LogView4JEventListener {
+public class DataProcessorManager implements LogView4JEventListener {
 
 	protected volatile boolean paused = false;
-	private static final SocketProcessorManager instance = new SocketProcessorManager();
+	private static final DataProcessorManager instance = new DataProcessorManager();
 
-	private SocketProcessorManager() {
+	private DataProcessorManager() {
 		LogView4JEventManager.getInstance().register(this);
 	}
 
-	public static SocketProcessorManager getInstance() {
+	public static DataProcessorManager getInstance() {
 		return instance;
 	}
 
