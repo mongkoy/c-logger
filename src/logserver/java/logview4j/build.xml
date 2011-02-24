@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+  LogView4J
+  
+  Java Swing Log4J event viewer
+  
+  Ant build file
+  
+-->
+<project name="logview4j" basedir="." default="all">
+
+  <property name="source.dir" location="${basedir}/src"/>
+  <property name="build.dir" location="${basedir}/build"/>
+  <property name="classes.dir" location="${build.dir}/classes"/>
+  <property name="images.dir" location="${basedir}/images"/>
+  <property name="unittest.dir" location="${basedir}/unittest"/>
+  <property name="unittest.report.dir" location="${unittest.dir}/report"/>
+  <property name="unittest.results.dir" location="${unittest.dir}/results"/>
+  <property name="javadoc.dir" location="${basedir}/javadoc"/>
+
+  <property file="build.properties"/>
+
+  <!--
+    Build classpath
+  -->
+  <path id="compile.classpath">
+    <fileset dir="lib">
+      <include name="log4j-1.2.11.jar"/>
+      <include name="concurrent-1.3.4.jar"/>
+      <include name="looks-1.3.1.jar"/>
+      <include name="glazedlists-1.0.0.jar"/>
+    </fileset>
+  </path>
+  
+  <!--
+    Unittest classpath
+  -->
+  <path id="unittest.classpath">
+    <path refid="compile.classpath"/>   
+    <pathelement path="${classes.dir}"/>
+    <fileset dir="lib">
+      <include name="junit-3.8.1.jar"/>
+    </fileset>
+  </path>
+  
+  <!--
+    Unittest classpath
+  -->
+  <path id="client.classpath">
+    <path refid="compile.classpath"/>  
+    <fileset dir="${build.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  
+  <!--
+    Clean up build artefacts
+  -->
+  <target name="clean" description="Cleans the project">
+    <delete dir="${classes.dir}"/>
+    <delete dir="${build.dir}"/>
+    <delete dir="${unittest.dir}"/>
+    <delete dir="${javadoc.dir}"/>
+  </target>
+  
+  <!--
+    Make sure all of the directories etc are created
+  -->
+  <target name="prepare" description="Prepares the project">
+    <tstamp/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${unittest.report.dir}"/>
+    <mkdir dir="${unittest.results.dir}"/>
+    <mkdir dir="${javadoc.dir}"/>
+  </target>
+  
+  <!--
+    Compile the classes
+  -->
+  <target name="compile" depends="prepare" description="Compiles Java classes">
+    <javac destdir="${classes.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="true"
+           compiler="javac1.4"
+           source="1.4">
+      <classpath refid="compile.classpath"/>
+      <src path="${source.dir}"/>
+      <exclude name="**/test/**/*.*"/>
+    </javac>
+  </target>
+  
+  <!--
+    Compile the tests
+  -->
+  <target name="compile-tests" depends="prepare" description="Compiles Java classes">
+    <javac destdir="${classes.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="true"
+           compiler="javac1.4"
+           source="1.4">
+      <classpath refid="unittest.classpath"/>
+      <src path="${source.dir}"/>
+      <include name="**/test/**/*.*"/>
+    </javac>
+  </target>
+  
+  <!--
+    Copies images into the classes directory for packaging
+  -->
+  <target name="copyImages" description="Copies images for packaging">
+    <copy todir="${classes.dir}/org/logview4j/ui/image/images">
+      <fileset dir="${images.dir}">
+        <include name="*.gif"/>
+      </fileset>
+    </copy>   
+  </target>
+  
+  
+  <!--
+    Build the target jar
+  -->
+  <target name="build" depends="compile, copyImages" description="Builds logview4j-${logview4j.version}.jar">
+    <pathconvert property="class-path" pathsep=" " dirsep="\">
+      <path refid="client.classpath"></path>
+      <mapper>
+        <chainedmapper>
+          <mapper type="flatten"/>
+          <mapper type="glob" from="*" to="lib/*"/>
+        </chainedmapper>
+      </mapper>
+    </pathconvert>
+
+    <jar destfile="${build.dir}/logview4j-${logview4j.version}.jar" 
+      basedir="${classes.dir}"
+      excludes="**/test/**/*.*">
+      <manifest>
+        <attribute name="Release-Version" value="${logview4j.version}"/>
+        <attribute name="Built-On" value="${TODAY}"/>
+        <attribute name="Main-Class" value="org.logview4j.ui.LogView4J"/>
+        <attribute name="Class-Path" value="${class-path}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!--
+    Build the distribution
+  -->
+  <target name="dist" depends="build" description="Builds the distribution.">
+    <zip destfile="logview4j-${logview4j.version}.zip" update="false">
+      <zipfileset dir="${basedir}/images" prefix="logview4j-${logview4j.version}" includes="logview4j.ico logview4j.gif"/>
+      <zipfileset dir="${basedir}/lib" prefix="logview4j-${logview4j.version}/lib" excludes="junit*.jar"/>
+      <zipfileset dir="${basedir}/build" prefix="logview4j-${logview4j.version}" includes="*.jar"/>
+      <zipfileset dir="${basedir}" includes="LICENSE.txt Additional_Licenses.txt" prefix="logview4j-${logview4j.version}"/>
+      <zipfileset dir="${basedir}/config" includes="logview4j.properties" prefix="logview4j-${logview4j.version}/config"/>
+    </zip>
+  </target>  
+  
+  
+  <!--
+    Build the distribution
+  -->
+  <target name="dist-src" depends="clean" description="Builds the source distribution.">
+    <zip destfile="logview4j-${logview4j.version}-src.zip" update="false">
+      <zipfileset dir="${basedir}"/>
+    </zip>
+  </target>  
+  
+  <!--
+    Executes Javadoc against the source code
+  -->
+  <target name="javadoc" description="Executes Javadoc against the source code">
+    <javadoc destdir="${javadoc.dir}"
+      Windowtitle="LogView4J"
+      Header="LogView4J"
+      breakiterator="no"
+      classpathref="compile.classpath">
+      <fileset dir="${source.dir}">
+        <exclude name="**/test/*.*" />
+      </fileset>
+    </javadoc>
+  </target>
+  
+  <!--
+    Execute junit tests
+  -->
+  <target name="unittest" depends="compile-tests" description="Executes the JUnit unittests">
+    <junit printsummary="yes"
+           haltonfailure="no"
+           errorproperty="unittest.failure"
+           failureproperty="unittest.failure"
+           fork="true"
+           timeout="5000">
+      <classpath refid="unittest.classpath"/>
+      <formatter type="xml"/>
+      <batchtest fork="no" todir="${unittest.results.dir}">
+        <fileset dir="src">
+          <include name="**/test/*Test.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    
+    <antcall target="unittest-report"/>
+    
+    <fail if="unittest.failure">Junit test failures were detected</fail>
+  </target>
+  
+  <!--
+    Report on the unit tests that were run
+  -->
+  <target name="unittest-report" description="Creates a JUnit report">
+    <junitreport todir="${unittest.report.dir}">
+      <fileset dir="${unittest.results.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report todir="${unittest.report.dir}"/>
+    </junitreport>  
+  </target>
+  
+  <!--
+    Runs the client application
+  -->
+  <target name="run" depends="build">
+    <java classpathref="client.classpath" 
+      classname="org.logview4j.ui.LogView4J" spawn="true" fork="true"/>
+  </target>
+  
+  <!--
+    Default target
+  -->
+  <target name="all" depends="build, javadoc, unittest" description="Default target that does everything"/>
+
+</project>
