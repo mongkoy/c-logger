@@ -94,11 +94,11 @@ static int sSendToSock(LogWriter *_this,const LogLevel logLevel,
 		char buf[BUF_MAX];
 		int bytes = 0;
 #ifdef VARIADIC_MACROS
-		bytes = snprintf(buf,BUF_MAX-1,"[%s][%llu][%s:%s:%s:%d]",
+		bytes = snprintf(buf,BUF_MAX-1,"\n[%s][%llu][%s:%s:%s:%d]",
 				sGetLogPrefix(logLevel),curTimeInMillis,
 				moduleName,file,funcName,lineNum);
 #else
-		bytes = snprintf(buf,BUF_MAX-1,"[%s]",sGetLogPrefix(logLevel));
+		bytes = snprintf(buf,BUF_MAX-1,"\n[%s]",sGetLogPrefix(logLevel));
 #endif
 		/* to be on safer side, check if required size is available. */
 		if(bytes < (BUF_MAX -1) )
@@ -127,9 +127,9 @@ int sSockFuncLogEntry(LogWriter *_this,const char* funcName)
 		char buf[BUF_MAX];
 		int bytes;
 #ifdef WIN32
-		bytes = _snprintf(buf,BUF_MAX-1,"{ %s ", funcName);
+		bytes = _snprintf(buf,BUF_MAX-1,"\n{ %s ", funcName);
 #else
-		bytes = snprintf(buf,BUF_MAX-1,"{ %s", funcName);
+		bytes = snprintf(buf,BUF_MAX-1,"\n{ %s", funcName);
 #endif
 		buf[BUF_MAX-1] = 0;
 		if((-1 == bytes ) || (bytes>BUF_MAX-1))
@@ -153,9 +153,9 @@ int sSockFuncLogExit(LogWriter* _this,const char* funcName,const int lineNumber)
 		char buf[BUF_MAX];
 		int bytes;
 #ifdef WIN32
-		bytes = _snprintf(buf,BUF_MAX-1,"%s : %d }", funcName,lineNumber);
+		bytes = _snprintf(buf,BUF_MAX-1,"\n%s : %d }", funcName,lineNumber);
 #else
-		bytes = snprintf(buf,BUF_MAX-1,"%s : %d }", funcName,lineNumber);
+		bytes = snprintf(buf,BUF_MAX-1,"\n%s : %d }", funcName,lineNumber);
 #endif
 		buf[BUF_MAX-1] = 0;
 		if((-1 == bytes ) || (bytes>BUF_MAX-1))

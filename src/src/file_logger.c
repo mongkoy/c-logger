@@ -193,6 +193,7 @@ static int sWriteToFile(LogWriter *_this,
 			moduleName,file,funcName,lineNum);
 #endif
 		vfprintf(flw->fp,fmt,ap); 
+		fprintf(flw->fp,"\n");
 		fflush(flw->fp);
 #ifdef _ENABLE_LL_ROLLBACK_
 		__CHECK_AND_ROLLBACK(flw);
