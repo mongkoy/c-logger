@@ -170,10 +170,11 @@ public class LogView4JFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 
-		fileMenu.add(new ExitAction());
 		if (!isOnline) {
 			fileMenu.add(new LoadLogFileAction());
 		}
+		fileMenu.add(new ExitAction());
+
 		helpMenu.add(new AboutAction());
 		setJMenuBar(menuBar);
 	}
