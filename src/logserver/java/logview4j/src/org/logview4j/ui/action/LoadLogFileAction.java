@@ -18,7 +18,7 @@ public class LoadLogFileAction extends AbstractAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser("./");
 		int option;
 		fileChooser.setMultiSelectionEnabled(false);
 		option = fileChooser.showOpenDialog(null);
