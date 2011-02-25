@@ -58,8 +58,8 @@ public class LogTable extends JTable implements LogView4JEventListener, MouseLis
 		"levelString", "combinedTimeStamp", "category", "message"};
 	protected static final String[] columnLabels = new String[]{" ", "Level",
 		"When", "Source", "Message"};
-	protected static final int[] caseInsensitiveColumns = new int[]{2, 4, 5};
-	protected static final int[] sortingColumns = new int[]{2, 3, 4, 5};
+	protected static final int[] caseInsensitiveColumns = new int[]{1, 3, 4};
+	protected static final int[] sortingColumns = new int[]{1, 2, 3, 4};
 	private int maxEvents = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENTS, 10000);
 	protected final EventList logEvents = new BasicEventList();
 	protected final LoggingLevelMatcherEditor levelMatcherEditor =
