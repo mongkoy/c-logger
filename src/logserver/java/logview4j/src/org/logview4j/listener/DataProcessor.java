@@ -21,9 +21,8 @@ import org.logview4j.dto.LogView4JLoggingEvent;
 public abstract class DataProcessor implements Runnable {
 
 	protected final InboundEventQueue eventQueue = InboundEventQueue.getInstance();
-	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat
-					(ConfigurationManager.getInstance().getString
-					(ConfigurationKey.LOG_FILENAME_FORMAT));
+	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat(ConfigurationManager.getInstance().getString(ConfigurationKey.LOG_FILENAME_FORMAT));
+	protected static final String LOG_OUTPUT_FOLDER = ConfigurationManager.getInstance().getString(ConfigurationKey.LOG_OUTPUT_FOLDER);
 
 	/**
 	 * Override this method from the subclasses
@@ -35,8 +34,7 @@ public abstract class DataProcessor implements Runnable {
 	 * The original data will not be mirrored to a file.
 	 * @param inputStream input stream
 	 */
-	protected void readData(InputStream inputStream)
-	{
+	protected void readData(InputStream inputStream) {
 		readData(inputStream, false);
 	}
 
@@ -55,7 +53,7 @@ public abstract class DataProcessor implements Runnable {
 			inputStreamReader = new InputStreamReader(inputStream);
 			bufferedReader = new BufferedReader(inputStreamReader);
 
-			if(mirrorDataToFile) {
+			if (mirrorDataToFile) {
 				String filename;
 				filename = generateLogFileName();
 				fileOutputStream = new FileOutputStream(filename);
@@ -68,7 +66,7 @@ public abstract class DataProcessor implements Runnable {
 			while ((log = bufferedReader.readLine()) != null) {
 				try {
 					/* Mirror to file if set to true */
-					if(printStream != null) {
+					if (printStream != null) {
 						printStream.println(log);
 					}
 					loggingEvent = LoggingEvent.valueOf(log);
@@ -99,11 +97,11 @@ public abstract class DataProcessor implements Runnable {
 			}
 			inputStreamReader = null;
 		}
-		if(printStream != null) {
+		if (printStream != null) {
 			printStream.close();
 			printStream = null;
 		}
-		if(fileOutputStream != null) {
+		if (fileOutputStream != null) {
 			try {
 				fileOutputStream.close();
 			} catch (IOException ex) {
@@ -122,6 +120,8 @@ public abstract class DataProcessor implements Runnable {
 		StringBuilder buffer = new StringBuilder();
 		String dateFormat;
 
+		buffer.append(LOG_OUTPUT_FOLDER);
+		buffer.append("/");
 		dateFormat = dateFormatter.format(new Date(System.currentTimeMillis()));
 		buffer.append(dateFormat);
 		buffer.append(".log");

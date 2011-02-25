@@ -50,4 +50,5 @@ public class ConfigurationKey {
 	public static final ConfigurationKey RECORD_EVENTS_WHEN_PAUSED = new ConfigurationKey("logview4j.record.events.when.paused");
 	public static final ConfigurationKey LOG_FILENAME_FORMAT = new ConfigurationKey("logview4j.log.filename.format");
 	public static final ConfigurationKey TIMESTAMP_DISPLAY_FORMAT = new ConfigurationKey("logview4j.timestamp.display.format");
+	public static final ConfigurationKey LOG_OUTPUT_FOLDER = new ConfigurationKey("logview4j.log.output.folder");
 }
