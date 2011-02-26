@@ -52,14 +52,21 @@ import ca.odell.glazedlists.swing.EventTableModel;
  * A JTable used for displaying log events and is aware of filter changes
  */
 public class LogTable extends JTable implements LogView4JEventListener, MouseListener {
+	private static final int INDEX_ICON = 0;
+	private static final int INDEX_LEVEL = 1;
+	private static final int INDEX_TIMESTAMP = 2;
+	private static final int INDEX_LOGGER_NAME = 3;
+	private static final int INDEX_MESSAGE = 4;
 
 	private static LogTable INSTANCE;
 	protected static final String[] propertyNames = new String[]{"icon",
-		"levelString", "combinedTimeStamp", "category", "message"};
+		"levelString", "when", "loggerName", "message"};
 	protected static final String[] columnLabels = new String[]{" ", "Level",
 		"When", "Source", "Message"};
-	protected static final int[] caseInsensitiveColumns = new int[]{1, 3, 4};
-	protected static final int[] sortingColumns = new int[]{1, 2, 3, 4};
+	protected static final int[] caseInsensitiveColumns = new int[]{INDEX_LEVEL,
+		INDEX_LOGGER_NAME, INDEX_MESSAGE};
+	protected static final int[] sortingColumns = new int[]{INDEX_LEVEL,
+		INDEX_TIMESTAMP, INDEX_LOGGER_NAME, INDEX_MESSAGE};
 	private int maxEvents = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENTS, 10000);
 	protected final EventList logEvents = new BasicEventList();
 	protected final LoggingLevelMatcherEditor levelMatcherEditor =
@@ -97,7 +104,8 @@ public class LogTable extends JTable implements LogView4JEventListener, MouseLis
 		sortedEvents = new SortedList(filteredEvents, null);
 		eventTableModel = new EventTableModel(sortedEvents, tableFormat);
 		setModel(eventTableModel);
-		tableComparorChooser = new LogTableComparatorChooser(this, sortedEvents, false, sortingColumns, 3);
+		tableComparorChooser = new LogTableComparatorChooser(this, sortedEvents,
+			false, sortingColumns, INDEX_TIMESTAMP);
 
 		try {
 			init();

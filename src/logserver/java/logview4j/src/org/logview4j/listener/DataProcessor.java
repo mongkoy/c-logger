@@ -20,9 +20,12 @@ import org.logview4j.dto.LogView4JLoggingEvent;
  */
 public abstract class DataProcessor implements Runnable {
 
+	public static final String LOG_OUTPUT_FOLDER = (ConfigurationManager.
+			getInstance().getString(ConfigurationKey.LOG_OUTPUT_FOLDER));
+
 	protected final InboundEventQueue eventQueue = InboundEventQueue.getInstance();
-	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat(ConfigurationManager.getInstance().getString(ConfigurationKey.LOG_FILENAME_FORMAT));
-	protected static final String LOG_OUTPUT_FOLDER = ConfigurationManager.getInstance().getString(ConfigurationKey.LOG_OUTPUT_FOLDER);
+	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat
+			(ConfigurationManager.getInstance().getString(ConfigurationKey.LOG_FILENAME_FORMAT));
 
 	/**
 	 * Override this method from the subclasses

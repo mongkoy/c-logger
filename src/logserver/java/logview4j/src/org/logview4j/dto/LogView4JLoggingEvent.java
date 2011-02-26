@@ -49,7 +49,6 @@ public class LogView4JLoggingEvent {
 	public static final int LEVEL_WARN_FLAG = 4;
 	public static final int LEVEL_ERROR_FLAG = 8;
 	public static final int LEVEL_FATAL_FLAG = 16;
-	private static long eventIdGenerator = 0;
 	private static final int TOTAL_LENGTH = 19;
 	private static int maxPayloadSize = ConfigurationManager.getInstance().getInt(ConfigurationKey.MAX_EVENT_PAYLOAD_SIZE, 100000);
 	private static final String TRUNCATE_MESSAGE_PREFIX = "\n\n[Message truncated from: ";
@@ -81,14 +80,12 @@ public class LogView4JLoggingEvent {
 	/**
 	 * All final as these are immutable
 	 */
-	private final String category;
+	private final String loggerName;
 	private final int level;
 	private final String message;
 	private final long when;
 	private transient String formattedString = null;
 	private transient boolean marked = false;
-	private final long eventId;
-	private final long combinedTimeStamp;
 
 	/**
 	 * Extract log information locally
@@ -96,11 +93,9 @@ public class LogView4JLoggingEvent {
 	 */
 	public LogView4JLoggingEvent(LoggingEvent e) {
 		level = e.getLevel().toInt();
-		category = e.getLoggerName();
+		loggerName = e.getLoggerName();
 		String tempMessage = e.getMessage() != null ? e.getMessage().toString() : null;
 		when = e.getTimestamp();
-		eventId = eventIdGenerator++;
-		combinedTimeStamp = createCombinedTimeStamp();
 
 		/**
 		 * Truncate huge messages up front
@@ -174,8 +169,8 @@ public class LogView4JLoggingEvent {
 		return null;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getLoggerName() {
+		return loggerName;
 	}
 
 	public int getLevel() {
@@ -188,15 +183,6 @@ public class LogView4JLoggingEvent {
 
 	public long getWhen() {
 		return when;
-	}
-
-	public long getCombinedTimeStamp() {
-		return combinedTimeStamp;
-	}
-
-	/* TODO: Remove this function together with the table format */
-	public boolean getStackTracePresent() {
-		return false;
 	}
 
 	public ImageIcon getIcon() {
@@ -240,7 +226,7 @@ public class LogView4JLoggingEvent {
 
 			buffer.append("Level:     ").append(getLevelString()).append('\n');
 			buffer.append("When:      ").append(dateFormatter.format(new Date(when))).append('\n');
-			buffer.append("From:      ").append(getCategory()).append("\n\n");
+			buffer.append("From:      ").append(getLoggerName()).append("\n\n");
 			buffer.append(message).append('\n');
 
 			formattedString = buffer.toString();
@@ -256,7 +242,7 @@ public class LogView4JLoggingEvent {
 	 * @param textToMatch the text to match against
 	 */
 	public void harvestQuickFilterItems(List textToMatch) {
-		textToMatch.add(getCategory());
+		textToMatch.add(getLoggerName());
 
 		textToMatch.add(getMessage());
 	}
@@ -274,27 +260,5 @@ public class LogView4JLoggingEvent {
 	 */
 	public boolean isMarked() {
 		return marked;
-	}
-
-	/**
-	 * Creates a combined timestamp where the event id is used to descriminate log events that
-	 * arrive at exactly teh same millisecond
-	 * @return the combined timestamp
-	 */
-	private long createCombinedTimeStamp() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(when);
-
-		String idString = eventId + "";
-
-		int lengthToPad = TOTAL_LENGTH - buffer.length() - idString.length();
-
-		for (int i = 0; i < lengthToPad; i++) {
-			buffer.append('0');
-		}
-
-		buffer.append(idString);
-
-		return Long.parseLong(buffer.toString());
 	}
 }

@@ -170,8 +170,12 @@ public class LogView4JFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 
+		/* Add menu item to load log file in offline mode */
 		if (!isOnline) {
-			fileMenu.add(new LoadLogFileAction());
+			JMenuItem loadLogFile;
+			loadLogFile = new JMenuItem(new LoadLogFileAction());
+			loadLogFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+			fileMenu.add(loadLogFile);
 		}
 		fileMenu.add(new ExitAction());
 
