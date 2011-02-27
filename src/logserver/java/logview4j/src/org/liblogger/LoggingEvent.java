@@ -86,6 +86,27 @@ public class LoggingEvent {
 	}
 
 	/**
+	 * Returns the string representation of this logging event
+	 * @return string representation of this logging event
+	 */
+	public String toString() {
+		StringBuffer buffer = new StringBuffer(64);
+
+		buffer.append('[');
+		buffer.append(level.toString());
+		buffer.append(']');
+		buffer.append('[');
+		buffer.append(timestamp);
+		buffer.append(']');
+		buffer.append('[');
+		buffer.append(loggerName);
+		buffer.append(']');
+		buffer.append(message);
+
+		return buffer.toString();
+	}
+
+	/**
 	 * Returns a LoggingEvent instance based on the liblogger log
 	 * @param log log
 	 * @return LoggingEvent instance

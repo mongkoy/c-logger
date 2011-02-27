@@ -17,16 +17,14 @@
  */
 package org.logview4j.listener.test;
 
-import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Random;
 
 import junit.framework.TestCase;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
+import org.liblogger.LoggingEvent;
 import org.logview4j.config.*;
 import org.logview4j.event.LogView4JEvent;
 import org.logview4j.event.LogView4JEventId;
@@ -54,13 +52,13 @@ public class SocketListenerTest extends TestCase implements LogView4JEventListen
 
 		try {
 
-			Socket socket = new Socket("localhost", ConfigurationManager.getInstance().getInt(ConfigurationKey.LISTEN_PORT, 4447));
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			Socket socket = new Socket("localhost", ConfigurationManager.getInstance().getInt(ConfigurationKey.LISTEN_PORT, 50007));
+			PrintStream out = new PrintStream(socket.getOutputStream());
 
 			for (i = 0; i < iterations; i++) {
 
 				LoggingEvent event = createRandomEvent(dice);
-				out.writeObject(event);
+				out.println(event);
 				eventsSent++;
 				out.flush();
 			}
@@ -102,12 +100,11 @@ public class SocketListenerTest extends TestCase implements LogView4JEventListen
 		try {
 
 			Socket socket = new Socket("localhost", ConfigurationManager.getInstance().getInt(ConfigurationKey.LISTEN_PORT, 4447));
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-
+			PrintStream out = new PrintStream(socket.getOutputStream());
 			for (i = 0; i < iterations; i++) {
 
 				LoggingEvent event = createRandomEvent(dice);
-				out.writeObject(event);
+				out.println(event);
 				eventsSent++;
 				out.flush();
 				Thread.sleep((long) dice.nextInt(10));
@@ -134,30 +131,18 @@ public class SocketListenerTest extends TestCase implements LogView4JEventListen
 	 */
 	private LoggingEvent createRandomEvent(Random dice) {
 
-		Logger logger = LogManager.getLogger(createRandomCategory(dice));
-
 		String category = createRandomCategory(dice);
 		Level level = createRandomLevel(dice);
 		String message = createRandomMessage(dice);
-		Throwable t = createRandomThrowable(dice);
-		LoggingEvent event = new LoggingEvent(category, logger, level, message, t);
+		LoggingEvent event = new LoggingEvent();
+		event.setLevel(level);
+		event.setLoggerName(category);
+		event.setMessage(message);
+		event.setTimestamp(System.currentTimeMillis());
 
 		return event;
 	}
 
-	/**
-	 * @param dice
-	 * @return
-	 */
-	private Throwable createRandomThrowable(Random dice) {
-		int i = dice.nextInt(10);
-
-		if (i == 7) {
-			return new Throwable(createRandomMessage(dice));
-		} else {
-			return null;
-		}
-	}
 	private static final String[] RANDOM_WORDS = new String[]{
 		"memory",
 		"Memory",
