@@ -29,14 +29,58 @@
 #include <sys/socket.h>  /* socket interface functions  */
 #include <netdb.h>       /* host to IP resolution       */
 #include <string.h>
+#include <arpa/inet.h>
+#include <time.h>
+
+
 #include <logserver_temp.h>
+#define LOGSERVER_LOG_FILENAME_FORMAT "%Y-%m-%d_%H.%M.%S.log"
 
 void print_usage() {
-        puts("iplogserv PORT_NUMBER MAX_MESSAGE_SIZE");
+        puts("logserver PORT_NUMBER MAX_MESSAGE_SIZE");
         puts("PORT_NUMBER --> port number ");
         puts("MAX_MESSAGE_SIZE --> maximum message size");
         puts("sample usage: iplogserv 444444 1024");
 
+}
+
+static FILE *open_logfile()
+{
+        FILE *logfile;
+        char log_filename[24];
+        time_t cur_time;
+        struct tm *time_s;
+        size_t nRet;
+
+        logfile = NULL;
+
+        cur_time = time(NULL);
+        time_s = localtime(&cur_time);
+        nRet = strftime(log_filename, sizeof (log_filename),
+                        LOGSERVER_LOG_FILENAME_FORMAT, time_s);
+        if(nRet > 0) {
+                logfile = fopen(log_filename, "wb");
+        }
+
+        return logfile;
+}
+
+static void close_logfile(FILE *logfile)
+{
+        fclose(logfile);
+}
+
+static void print_data(FILE *dest, void *data, size_t data_size) {
+        uint8_t *buffer;
+
+        buffer = (uint8_t *) data;
+
+        while (data_size--) {
+                if(*buffer > 0) {
+                        fputc(*buffer, dest);
+                }
+                buffer++;
+        }
 }
 
 int create_socket(uint16_t port) {
@@ -78,7 +122,12 @@ int read_client(int fd, struct iplogserver_t *logbuff_server) {
         buffer = logbuff_server->message_buffer;
         buff_size = logbuff_server->message_buffsize;
 
-        numbytes = read(fd, buffer, buff_size + 1);
+        while((numbytes = read(fd, buffer, buff_size)) > 0){
+            if(numbytes < 0){
+                fprintf(stderr, "ERROR reading from socket");
+                return -1;
+            }
+        }
 
         if (numbytes < 0) {
                 /* Read error. */
@@ -89,7 +138,9 @@ int read_client(int fd, struct iplogserver_t *logbuff_server) {
                 return -1;
         else {
                 /* Data read. */
-                fwrite(buffer, sizeof(char), numbytes, stdout);
+                /*fwrite(buffer, sizeof(char), numbytes, stdout);*/
+            print_data(stdout, buffer, numbytes);
+            /*print_data(logfile,buffer,numbytes); */
                 return 0;
         }
 }
