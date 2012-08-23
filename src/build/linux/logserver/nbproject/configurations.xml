@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="69">
-  <logicalFolder name="root" displayName="root" projectFiles="true">
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
-                   projectFiles="true"
-                   kind="SOURCE_LOGICAL_FOLDER">
+                   projectFiles="true">
+      <itemPath>../../../logserver/linux/inc/logserver_temp.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
-                   projectFiles="true"
-                   kind="SOURCE_LOGICAL_FOLDER">
+                   projectFiles="true">
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
-                   projectFiles="true"
-                   kind="SOURCE_LOGICAL_FOLDER">
+                   projectFiles="true">
       <itemPath>../../../logserver/linux/logserver.c</itemPath>
+      <itemPath>../../../logserver/linux/src/logserver_temp.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -33,30 +32,43 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
         <cTool>
-          <commandLine>-Wextra</commandLine>
-          <warningLevel>2</warningLevel>
+          <commandlineTool>gcc</commandlineTool>
+          <incDir>
+            <pElem>../../../logserver/linux/inc/</pElem>
+            <pElem>../../../inc</pElem>
+          </incDir>
         </cTool>
+        <fortranCompilerTool>
+          <warningLevel>2</warningLevel>
+        </fortranCompilerTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/logserver</output>
         </linkerTool>
       </compileType>
+      <item path="../../../logserver/linux/logserver.c"
+            ex="true"
+            tool="0"
+            flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
           <stripSymbols>true</stripSymbols>
+          <incDir>
+            <pElem>../../../logserver/linux/inc/</pElem>
+            <pElem>../../../inc</pElem>
+          </incDir>
           <commandLine>-Wextra</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
@@ -71,6 +83,9 @@
         </asmTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/logserver</output>
+          <linkerAddLib>
+            <pElem>../logger/dist/Debug</pElem>
+          </linkerAddLib>
           <stripSymbols>true</stripSymbols>
         </linkerTool>
       </compileType>

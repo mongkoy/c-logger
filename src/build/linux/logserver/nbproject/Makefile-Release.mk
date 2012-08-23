@@ -17,22 +17,25 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
+FC=gfortran
 AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Release
 CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/704030866/logserver_temp.o \
 	${OBJECTDIR}/_ext/831108029/logserver.o
 
 
@@ -50,28 +53,33 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-L../logger/dist/Debug
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Release.mk dist/Release/logserver
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/logserver
 
-dist/Release/logserver: ${OBJECTFILES}
-	${MKDIR} -p dist/Release
+${CND_DISTDIR}/${CND_CONF}/logserver: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/logserver -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/_ext/704030866/logserver_temp.o: ../../../logserver/linux/src/logserver_temp.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/704030866
+	${RM} $@.d
+	$(COMPILE.c) -O2 -Wall -s -I../../../logserver/linux/inc/ -I../../../inc -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/704030866/logserver_temp.o ../../../logserver/linux/src/logserver_temp.c
 
 ${OBJECTDIR}/_ext/831108029/logserver.o: ../../../logserver/linux/logserver.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/831108029
 	${RM} $@.d
-	$(COMPILE.c) -O2 -Wall -s -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/831108029/logserver.o ../../../logserver/linux/logserver.c
+	$(COMPILE.c) -O2 -Wall -s -I../../../logserver/linux/inc/ -I../../../inc -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/831108029/logserver.o ../../../logserver/linux/logserver.c
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
-	${RM} -r build/Release
-	${RM} dist/Release/logserver
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} ${CND_DISTDIR}/${CND_CONF}/logserver
 
 # Subprojects
 .clean-subprojects:

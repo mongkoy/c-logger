@@ -17,27 +17,29 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
+FC=gfortran
 AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/831108029/logserver.o
+	${OBJECTDIR}/_ext/704030866/logserver_temp.o
 
 
 # C Compiler Flags
-CFLAGS=-Wextra
+CFLAGS=
 
 # CC Compiler Flags
 CCFLAGS=
@@ -54,24 +56,24 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Debug.mk dist/Debug/logserver
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/logserver
 
-dist/Debug/logserver: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug
+${CND_DISTDIR}/${CND_CONF}/logserver: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/logserver ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/831108029/logserver.o: ../../../logserver/linux/logserver.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/831108029
+${OBJECTDIR}/_ext/704030866/logserver_temp.o: ../../../logserver/linux/src/logserver_temp.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/704030866
 	${RM} $@.d
-	$(COMPILE.c) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/831108029/logserver.o ../../../logserver/linux/logserver.c
+	$(COMPILE.c) -g -I../../../logserver/linux/inc/ -I../../../inc -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/704030866/logserver_temp.o ../../../logserver/linux/src/logserver_temp.c
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
-	${RM} -r build/Debug
-	${RM} dist/Debug/logserver
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} ${CND_DISTDIR}/${CND_CONF}/logserver
 
 # Subprojects
 .clean-subprojects:
