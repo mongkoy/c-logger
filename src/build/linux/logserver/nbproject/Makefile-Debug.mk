@@ -35,7 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/704030866/logserver_temp.o
+	${OBJECTDIR}/_ext/704030866/logserver.o
 
 
 # C Compiler Flags
@@ -62,10 +62,10 @@ ${CND_DISTDIR}/${CND_CONF}/logserver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/logserver ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/_ext/704030866/logserver_temp.o: ../../../logserver/linux/src/logserver_temp.c 
+${OBJECTDIR}/_ext/704030866/logserver.o: ../../../logserver/linux/src/logserver.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/704030866
 	${RM} $@.d
-	$(COMPILE.c) -g -I../../../logserver/linux/inc/ -I../../../inc -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/704030866/logserver_temp.o ../../../logserver/linux/src/logserver_temp.c
+	$(COMPILE.c) -g -I../../../logserver/linux/inc/ -I../../../inc -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/704030866/logserver.o ../../../logserver/linux/src/logserver.c
 
 # Subprojects
 .build-subprojects:
