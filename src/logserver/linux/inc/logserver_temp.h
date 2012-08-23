@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-struct iplogserver_t{
+struct logserver_t{
         int message_buffsize;
         char * message_buffer;
 };
