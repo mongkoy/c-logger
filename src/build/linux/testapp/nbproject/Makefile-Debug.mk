@@ -17,19 +17,21 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
+FC=gfortran
 AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -56,16 +58,16 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-Wl,-rpath ../logger/dist/Debug -L../logger/dist/Debug -llogger
+LDLIBSOPTIONS=-Wl,-rpath,../logger/dist/Debug -L../logger/dist/Debug -llogger
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Debug.mk dist/Debug/testapp
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/testapp
 
-dist/Debug/testapp: ../logger/dist/Debug/liblogger.so
+${CND_DISTDIR}/${CND_CONF}/testapp: ../logger/dist/Debug/liblogger.so
 
-dist/Debug/testapp: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug
+${CND_DISTDIR}/${CND_CONF}/testapp: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/testapp ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/_ext/2407264/src_nofilename.o: ../../../testapp/src_nofilename.c 
@@ -109,8 +111,8 @@ ${OBJECTDIR}/_ext/2407264/src_nologs.o: ../../../testapp/src_nologs.c
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
-	${RM} -r build/Debug
-	${RM} dist/Debug/testapp
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} ${CND_DISTDIR}/${CND_CONF}/testapp
 
 # Subprojects
 .clean-subprojects:
